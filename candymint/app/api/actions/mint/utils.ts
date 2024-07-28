@@ -97,3 +97,11 @@ export const mintTransaction = async (
 
   return transaction;
 };
+
+export const getItemsRedeemed = async () => {
+  const umi = createUmi(ENDPOINT);
+  const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
+  const itemsRedeemed = Number(candyMachine.itemsRedeemed);
+
+  return itemsRedeemed;
+};

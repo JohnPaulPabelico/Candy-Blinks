@@ -5,13 +5,15 @@ import {
   ActionPostResponse,
   createPostResponse,
 } from "@solana/actions";
-import { mintTransaction } from "./mintTransaction";
+import { getItemsRedeemed, mintTransaction } from "./utils";
 
 export const GET = async (req: Request) => {
+  const items = await getItemsRedeemed();
+
   const payload: ActionGetResponse = {
     title: "Mint a Spud Mate",
     icon: "https://spudsquad.vercel.app/Gallery%20Images/6.svg",
-    description: "Join the Spud Squad now!",
+    description: `Join the Spud Squad now! (${items}/999)`,
     label: "Mint Spud Mate 0.05 SOL",
   };
 
