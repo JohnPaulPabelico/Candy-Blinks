@@ -22,62 +22,89 @@ export default function Dashboard() {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-center bg-yellow-200">
         {/* BLINK FORM */}
-        <div className="bg-red-300 w-3/4 p-5 font-wonderbar rounded-lg ">
-          <div className="flex items-center">
-            <div className="text-3xl">Add a blink</div>{" "}
-            <div
-              className="ml-auto text-xl px-4 py-3 bg-red-500 rounded-md hover:bg-red-600 cursor-pointer transition-all delay-100"
-              onClick={() => setSuccessMessage(true)}
-            >
-              Save
-            </div>
-          </div>
-          <div className="mt-5">
-            <form>
-              <input
-                className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full"
-                type="text"
-                placeholder="Candy Machine Address"
-              />
-              <div className="mt-4 flex justify-between">
-                <input
-                  className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full"
-                  type="text"
-                  placeholder="Title"
-                />
-                <input
-                  className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full ml-3"
-                  type="text"
-                  placeholder="Label"
-                />
-                <input
-                  className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full ml-3"
-                  type="text"
-                  placeholder="Description"
-                />
+        <div className="flex justify-center ml-5">
+          <div>
+            <div className="bg-red-300 mr-10 p-5 font-wonderbar rounded-lg ">
+              <div className="flex items-center">
+                <div className="text-3xl">Add a blink</div>{" "}
+                <div
+                  className="ml-auto text-xl px-4 py-3 bg-red-500 rounded-md hover:bg-red-600 cursor-pointer transition-all delay-100"
+                  onClick={() => setSuccessMessage(true)}
+                >
+                  Save
+                </div>
               </div>
-              <input
-                className="mt-4 text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-1/2"
-                type="text"
-                placeholder="Image Url"
-              />
-            </form>
-          </div>
-        </div>
-        {/* LIST OF BLINKS */}
-        <div className="mt-3 bg-red-300 w-3/4 p-5 font-wonderbar rounded-lg ">
-          <div className="flex items-center">
-            <div className="text-3xl">Your Candy Blinks</div>
-          </div>
-          <div className="mt-5 bg-red-400 rounded-md font-sans">
-            <div className="p-3">
-              <ul>
-                <li>Blink 1</li>
-                <li>Blink 2</li>
-                <li>Blink 3</li>
-                <li>Blink 4</li>
-              </ul>
+              <div className="mt-5">
+                <form>
+                  <input
+                    className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full"
+                    type="text"
+                    placeholder="Candy Machine Address"
+                  />
+                  <div className="mt-4 flex justify-between">
+                    <input
+                      className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full"
+                      type="text"
+                      placeholder="Title"
+                    />
+                    <input
+                      className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full ml-3"
+                      type="text"
+                      placeholder="Label"
+                    />
+                    <input
+                      className="text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-full ml-3"
+                      type="text"
+                      placeholder="Description"
+                    />
+                  </div>
+                  <input
+                    className="mt-4 text-lg px-3 py-2 bg-white rounded-md text-slate-800 font-sans w-1/2"
+                    type="text"
+                    placeholder="Image Url"
+                  />
+                </form>
+              </div>
             </div>
+            {/* LIST OF BLINKS */}
+            <div className="mt-3 bg-red-300 mr-10 p-5 font-wonderbar rounded-lg ">
+              <div className="flex items-center">
+                <div className="text-3xl">Your Candy Blinks</div>
+              </div>
+              <div className="mt-5 bg-red-400 rounded-md font-sans">
+                <div className="p-3 flex justify-start">
+                  <Image
+                    src={"/Blink.png"}
+                    alt="preview"
+                    width={165}
+                    height={165}
+                  />
+                  <Image
+                    src={"/Blink.png"}
+                    alt="preview"
+                    width={165}
+                    height={165}
+                    className="ml-5"
+                  />
+                  <Image
+                    src={"/Blink.png"}
+                    alt="preview"
+                    width={165}
+                    height={165}
+                    className="ml-5"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <Image
+              src={"/BlankBlink.png"}
+              alt="preview"
+              width={500}
+              height={500}
+              className="mr-20"
+            />
           </div>
         </div>
         <label
@@ -142,7 +169,7 @@ export default function Dashboard() {
                 <div
                   onClick={() =>
                     copyToClipboard(
-                      "https://dial.to/?action=solana-action:https://buidlstation.vercel.app/api/actions/mint"
+                      "https://dial.to/?action=solana-action:https://candyblinks.vercel.app/api/actions/mint"
                     )
                   }
                   className="font-wonderbar font-semibold text-xl bg-green-400 px-2 py-1 rounded-full hover:bg-green-500 hover:scale-110 transition duration-50 shadow-lg -translate-y-2 flex justify-center cursor-pointer"
