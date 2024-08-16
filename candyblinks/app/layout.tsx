@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import localfont from "next/font/local";
 
@@ -14,6 +14,11 @@ const wonderbar = localfont({
 });
 
 const inter = Inter({ subsets: ["latin"] });
+const DM_Sans_init = DM_Sans({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-dm-sans",
+});
 
 export const metadata: Metadata = {
   title: "Candy Mint",
@@ -27,7 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={wonderbar.variable}>
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} ${DM_Sans_init.className}`}>
+        {children}
+      </body>
     </html>
   );
 }
