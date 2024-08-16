@@ -19,14 +19,21 @@
     "@solana-developers/helpers": "^2.3.0",
     "@solana/actions": "^1.2.0",
     "@solana/wallet-adapter-react": "^0.15.35",
+    "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "^1.95.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "daisyui": "^4.12.10",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.3.21",
+    "lucide-react": "^0.428.0",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.2.1"
+    "react-icons": "^5.2.1",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
