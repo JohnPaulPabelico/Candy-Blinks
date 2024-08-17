@@ -21,7 +21,7 @@ const DM_Sans_init = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Candy Mint",
+  title: "Candy Blinks",
   description: "A Candy Machine BLink Generator",
 };
 
