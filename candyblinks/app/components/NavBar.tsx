@@ -23,7 +23,7 @@ const NavBar: React.FC = () => {
 
   return (
     <div
-      className={`flex items-center lg:fixed fixed top-0 w-full  px-5 min-h-30 justify-between z-10 transition py-5 ${
+      className={`flex items-center lg:fixed top-0 w-full  px-5 min-h-30 justify-between z-10 transition py-5 ${
         barState ? "bg-slate-950" : "bg-white/1"
       } ${isTop ? "lg:bg-transparent" : "backdrop-blur-md shadow-lg "}`}
     >
