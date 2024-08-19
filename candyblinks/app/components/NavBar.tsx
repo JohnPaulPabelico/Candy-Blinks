@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FaBars } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const NavBar: React.FC = () => {
   const [barState, setBarState] = useState(false);
@@ -90,14 +91,26 @@ const NavBar: React.FC = () => {
       <div>
         <div className={`${barState ? "block" : "invisible lg:visible"}`}>
           <div className="z-999 lg:block hidden ">
-            <WalletMultiButton
-              style={{
-                backgroundColor: "#f87171",
-                fontFamily: "var(--font-dm-sans)",
-                color: "white",
-                fontSize: "1.25rem",
-              }}
-            />
+            <SignedOut>
+              <div>
+                <Link
+                  className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
+                  href="/dashboard"
+                >
+                  Get Started!
+                </Link>
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <div>
+                <Link
+                  className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
+                  href="/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </div>
+            </SignedIn>
           </div>
         </div>
       </div>
