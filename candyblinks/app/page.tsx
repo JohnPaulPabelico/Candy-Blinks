@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import NavBar from "./components/NavBar";
 import { useEffect, useMemo, useState } from "react";
+import About from "./components/About";
 
 export default function Home() {
   const [rendered, setrendered] = useState(false);
@@ -32,6 +33,7 @@ export default function Home() {
               <div>
                 <NavBar />
                 <Hero />
+                <About />
                 {/* <Hero /> */}
                 <Footer />
               </div>
