@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import localfont from "next/font/local";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const wonderbar = localfont({
   src: [
@@ -31,10 +38,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={wonderbar.variable}>
-      <body className={`${inter.className} ${DM_Sans_init.className}`}>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={wonderbar.variable}>
+        <body
+          className={`${inter.className} ${DM_Sans_init.className}`}
+          suppressHydrationWarning={true}
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

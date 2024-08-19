@@ -8,7 +8,8 @@ import Link from "next/link";
 function Footer() {
   return (
     <div>
-      <div className="flex items-center flex-col justify-center p-10 bg-neutral-900 text-primary-content">
+      <div className="flex items-center flex-col justify-center p-10 bg-neutral-950 text-primary-content bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#45061f]  to-50%  to-neutral-950">
+        <div className="divider "></div>
         <Image
           src="/logo.png"
           alt="logo"
