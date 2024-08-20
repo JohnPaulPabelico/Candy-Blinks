@@ -40,7 +40,7 @@ const NavBar: React.FC = () => {
         <ul className={`flex-col lg:flex-row flex items-center  lg:gap-0`}>
           <li className={`${barState ? "block" : "invisible lg:visible"}`}>
             <Link
-              className={`lg:ml-8 lg:text-xl text-3xl  dm-sans rounded-full m-4 hover:text-slate-400 text-slate-100 transition duration-200 `}
+              className={`lg:text-xl text-3xl  dm-sans rounded-full m-4 hover:text-slate-400 text-slate-100 transition duration-200 `}
               href="#home"
               onClick={() => {
                 setBarState(false);

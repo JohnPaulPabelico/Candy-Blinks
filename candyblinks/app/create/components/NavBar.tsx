@@ -27,13 +27,15 @@ const NavBar: React.FC = () => {
       className={`flex items-center fixed top-0 w-full px-5 min-h-30 justify-start transition py-5 backdrop-blur-md shadow-lg bg-black/50`}
     >
       <div className="flex items-center justify-center">
-        <Image
-          src={"/logo.png"}
-          alt="logo"
-          width={50}
-          height={50}
-          className="ml-5"
-        />
+        <Link href={"/"}>
+          <Image
+            src={"/logo.png"}
+            alt="logo"
+            width={50}
+            height={50}
+            className="ml-5 cursor-pointer"
+          />
+        </Link>
         <ul className="ml-10 flex justify-center items-center gap-5">
           <li className="text-lg dm-sans text-white ml-5 flex justify-center items-center ">
             <Link
