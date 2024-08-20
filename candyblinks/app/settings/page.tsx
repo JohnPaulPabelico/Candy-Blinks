@@ -19,7 +19,7 @@ export default async function Dashboard() {
   return (
     <SignedIn>
       <NavBar />
-      <div className="min-h-dvh flex justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10% via-neutral-950 via-70%  to-neutral-950">
+      <div className="min-h-dvh flex justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950  to-neutral-950">
         <span className="text-2xl font-bold text-white mr-10">
           MAMA MO SETTINGS
         </span>
