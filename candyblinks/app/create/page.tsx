@@ -1,0 +1,294 @@
+"use client";
+import React, { useRef, useState } from "react";
+import Image from "next/image";
+import { createClient } from "@supabase/supabase-js";
+
+import { SignedIn, useAuth } from "@clerk/nextjs";
+import NavBar from "./components/NavBar";
+import { IoIosClose } from "react-icons/io";
+
+import Swal from "sweetalert2";
+
+import supabase from "../lib/supabaseClient";
+import { createBlink } from "../lib/blinkService";
+
+export default function Dashboard() {
+  const [candyMachineId, setCandyMachineId] = useState("");
+  const [title, setTitle] = useState("");
+  const [label, setLabel] = useState("");
+  const [iconUrl, setIconUrl] = useState("");
+  const [description, setDescription] = useState("");
+
+  const [success, setSuccess] = useState(false);
+
+  const { userId } = useAuth();
+
+  const ref = useRef<HTMLFormElement>(null);
+
+  const handleCreateBlink = async () => {
+    if (
+      !candyMachineId ||
+      !title ||
+      !label ||
+      !iconUrl ||
+      !description ||
+      !userId
+    ) {
+      console.error("All fields must be filled");
+      return;
+    }
+
+    try {
+      const currentTime = new Date().getTime();
+      const data = await createBlink(
+        candyMachineId || "", // Default to empty string
+        title || "",
+        label || "",
+        iconUrl || "",
+        description || "",
+        userId || "", // Default to empty string
+        currentTime
+      );
+
+      console.log("data: ", data);
+      ref.current?.reset();
+      setSuccess(true);
+      setCandyMachineId("");
+      setTitle("");
+      setLabel("");
+      setIconUrl("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error creating blink: ", error);
+    }
+  };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    background: "#f87171",
+    color: "#fff",
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const candyMachineIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setCandyMachineId(inputValue);
+    console.log("candyMachineId: ", candyMachineId);
+  };
+
+  const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setTitle(inputValue);
+    console.log("title: ", title);
+  };
+
+  const labelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setLabel(inputValue);
+    console.log("label: ", label);
+  };
+
+  const iconUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setIconUrl(inputValue);
+    console.log("iconUrl: ", iconUrl);
+  };
+
+  const descriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputValue = e.target.value;
+    setDescription(inputValue);
+    console.log("description: ", description);
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      Toast.fire({
+        icon: "success",
+        title: "Blink copied successfully",
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      alert("Failed to copy to clipboard.");
+    }
+  };
+
+  return (
+    <SignedIn>
+      <NavBar />
+      <div className="min-h-dvh flex gap-5 justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">
+        <form className="w-full max-w-xl" ref={ref}>
+          <div className=" text-5xl dm-sans font-semibold text-white">
+            Create a <span className="text-red-400">Candy Blink</span>
+          </div>
+          <div className=" mt-2 mb-10 text-md dm-sans text-neutral-300">
+            Bring your Candy Blink to life with personalized details that make
+            it uniquely yours. Just fill in the form below, and watch your Candy
+            Blink sparkle!
+          </div>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text dm-sans text-white">
+                Candy Machine ID
+              </span>
+            </div>
+            <input
+              type="text"
+              placeholder=""
+              className="input input-bordered w-full bg-black text-white"
+              onChange={(e) => candyMachineIdChange(e)}
+            />
+          </label>
+          <div className="grid grid-cols-2 gap-4">
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text dm-sans text-white">Title</span>
+              </div>
+              <input
+                type="text"
+                placeholder=""
+                className="input input-bordered w-full bg-black text-white"
+                onChange={(e) => titleChange(e)}
+              />
+            </label>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text dm-sans text-white">Label</span>
+              </div>
+              <input
+                type="text"
+                placeholder=""
+                className="input input-bordered w-full bg-black text-white"
+                onChange={(e) => labelChange(e)}
+              />
+            </label>
+          </div>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text dm-sans text-white">Icon URL</span>
+            </div>
+            <input
+              type="text"
+              placeholder=""
+              className="input input-bordered w-full bg-black text-white"
+              onChange={(e) => iconUrlChange(e)}
+            />
+          </label>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text text-white">Description</span>
+            </div>
+            <textarea
+              className="textarea textarea-bordered h-24 w-full bg-black text-white"
+              placeholder=""
+              onChange={(e) => descriptionChange(e)}
+            ></textarea>
+          </label>
+          <div className="w-full flex justify-center">
+            <div
+              className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+              onClick={handleCreateBlink}
+            >
+              Save!
+            </div>
+          </div>
+        </form>
+        <div>
+          <div className="label">
+            <span className="label-text dm-sans text-white">Blink Preview</span>
+          </div>
+          <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2">
+            {iconUrl ? (
+              <img
+                src={iconUrl}
+                alt="icon"
+                width={400}
+                height={400}
+                className="rounded-md"
+              />
+            ) : (
+              <Image
+                src={"/CandyBlinks.png"}
+                alt="logo"
+                width={400}
+                height={400}
+                className="rounded-md"
+              />
+            )}
+            <div className="mt-3">
+              <div className="text-sm dm-sans text-neutral-400 flex items-center ">
+                <Image
+                  src={"/logo.png"}
+                  alt="logo"
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                />
+                candyblinks.fun
+              </div>
+              <div className="mt-3 text-lg dm-sans text-white">
+                <div className="mt-3 text-lg dm-sans text-white">
+                  {title ? title : "Title"}
+                </div>
+              </div>
+              <div className="mt-1 text-sm dm-sans text-neutral-400 text-wrap w-full">
+                {description
+                  ? description
+                  : "Description - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."}
+              </div>
+              <button className="mt-3 p-2 rounded-md bg-black hover:bg-neutral-950 transition duration-200 w-full text-white">
+                <span className="text-white font-bold">
+                  {label ? label : "Label"}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>{" "}
+        {success && (
+          <>
+            <style>{`
+      body {
+        overflow: hidden;
+      }
+    `}</style>
+            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all fade-in pt-[76px] bg-black bg-opacity-60 min-h-dvh">
+              <div className="flex items-center justify-center ">
+                <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 -translate-y-24">
+                  <IoIosClose
+                    className="text-4xl ml-auto cursor-pointer hover:text-neutral-300 translate-x-5 -translate-y-5 transition text-white"
+                    onClick={() => {
+                      setSuccess(false);
+                    }}
+                  />
+                  <p className="text-white font-bold lg:text-5xl text-4xl -translate-y-8 text-center dm-sans mt-5">
+                    Success!
+                  </p>
+                  <p className="dm-sans lg:text-2xl text-xl mt-3 pixelify -translate-y-8 text-center text-white font-semibold">
+                    <span className="text-red-400">Candy Blink</span> Created
+                  </p>
+                  <div
+                    className="text-center text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+                    onClick={() => {
+                      copyToClipboard(
+                        "https://candyblinks.fun/api/actions/mint"
+                      );
+                    }}
+                  >
+                    Click to Copy Blink
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </SignedIn>
+  );
+}

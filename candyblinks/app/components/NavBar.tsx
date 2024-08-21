@@ -23,7 +23,7 @@ const NavBar: React.FC = () => {
 
   return (
     <div
-      className={`flex items-center lg:fixed fixed top-0 w-full  px-5 min-h-30 justify-between z-10 transition py-5 ${
+      className={`flex items-center lg:fixed top-0 w-full  px-5 min-h-30 justify-between z-10 transition py-5 ${
         barState ? "bg-slate-950" : "bg-white/1"
       } ${isTop ? "lg:bg-transparent" : "backdrop-blur-md shadow-lg "}`}
     >
@@ -40,7 +40,7 @@ const NavBar: React.FC = () => {
         <ul className={`flex-col lg:flex-row flex items-center  lg:gap-0`}>
           <li className={`${barState ? "block" : "invisible lg:visible"}`}>
             <Link
-              className={`lg:ml-8 lg:text-xl text-3xl  dm-sans rounded-full m-4 hover:text-slate-400 text-slate-100 transition duration-200 `}
+              className={`lg:text-xl text-3xl  dm-sans rounded-full m-4 hover:text-slate-400 text-slate-100 transition duration-200 `}
               href="#home"
               onClick={() => {
                 setBarState(false);
