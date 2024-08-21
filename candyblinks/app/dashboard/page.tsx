@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
@@ -36,7 +36,7 @@ export default function Dashboard() {
   const [iconUrl, setIconUrl] = useState("");
   const [description, setDescription] = useState("");
 
-  const getBlink = async () => {
+  const getBlink = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("blinks")
@@ -49,7 +49,7 @@ export default function Dashboard() {
     } catch (error) {
       console.log("error: ", error);
     }
-  };
+  }, [userId]);
 
   const deleteBlink = async (id: number) => {
     try {
@@ -69,8 +69,10 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    getBlink();
-  }, []);
+    if (userId) {
+      getBlink();
+    }
+  }, [userId, getBlink]);
 
   const editBlink = (blink: Blink) => {
     setSelectedBlink(blink);
@@ -193,7 +195,7 @@ export default function Dashboard() {
                 overflow: hidden;
               }
             `}</style>
-            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all fade-in pt-[76px] bg-black bg-opacity-30 min-h-dvh">
+            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all pt-[76px] bg-black bg-opacity-60 min-h-dvh">
               <div className="flex items-center justify-center">
                 <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 -translate-y-24">
                   <form className="w-full max-w-xl">
