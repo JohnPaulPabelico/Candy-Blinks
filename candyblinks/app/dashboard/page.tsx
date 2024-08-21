@@ -7,6 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import supabase from "../lib/supabaseClient";
+import { updateBlink } from "../lib/blinkService";
 
 interface TruncatedTextProps {
   text: string;
@@ -28,7 +29,7 @@ interface Blink {
 export default function Dashboard() {
   const { userId } = useAuth();
   const [blinks, setBlinks] = useState<Blink[]>([]); // State to hold the fetched blinks
-  const [successMessage, setSuccessMessage] = useState<string>();
+  const [selectedBlink, setSelectedBlink] = useState<Blink | null>(null);
   const [candyMachineId, setCandyMachineId] = useState("");
   const [title, setTitle] = useState("");
   const [label, setLabel] = useState("");
@@ -71,20 +72,37 @@ export default function Dashboard() {
     getBlink();
   }, []);
 
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Copied to clipboard!");
-    } catch (err) {
-      console.error("Failed to copy: ", err);
-      alert("Failed to copy to clipboard.");
-    }
+  const editBlink = (blink: Blink) => {
+    setSelectedBlink(blink);
+    setCandyMachineId(blink.candymachine_id);
+    setTitle(blink.title);
+    setLabel(blink.label);
+    setIconUrl(blink.image_url);
+    setDescription(blink.description);
   };
 
-  const candyMachineIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setCandyMachineId(inputValue);
-    console.log("candyMachineId: ", candyMachineId);
+  const handleSubmit = async () => {
+    if (selectedBlink) {
+      try {
+        console.log("selectedBlink: ", selectedBlink);
+        const updatedBlink = await updateBlink(
+          selectedBlink.id,
+          title,
+          label,
+          iconUrl,
+          description
+        );
+        setBlinks(
+          blinks.map((blink) =>
+            blink.id === selectedBlink.id ? (updatedBlink[0] as Blink) : blink
+          )
+        );
+        setSelectedBlink(null); // Close the edit form
+      } catch (error) {
+        console.error("Failed to update blink: ", error);
+        alert("Failed to update blink.");
+      }
+    }
   };
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,7 +169,10 @@ export default function Dashboard() {
                   <TruncatedText text={blink.candymachine_id} />
                 </span>
                 <div className="flex justify-end items-center">
-                  <div className="mr-4 mt-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200">
+                  <div
+                    className="mr-4 mt-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
+                    onClick={() => editBlink(blink)}
+                  >
                     <FaEdit />
                   </div>
                   <div
@@ -165,35 +186,24 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-        {true && (
+        {selectedBlink && (
           <>
             <style>{`
-      body {
-        overflow: hidden;
-      }
-    `}</style>
+              body {
+                overflow: hidden;
+              }
+            `}</style>
             <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all fade-in pt-[76px] bg-black bg-opacity-30 min-h-dvh">
-              <div className="flex items-center justify-center ">
+              <div className="flex items-center justify-center">
                 <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 -translate-y-24">
                   <form className="w-full max-w-xl">
-                    <div className=" text-3xl dm-sans font-semibold text-white">
+                    <div className="text-3xl dm-sans font-semibold text-white">
                       Edit Details
                     </div>
-                    {/* <label className="mt-3 form-control">
-                      <div className="label">
-                        <span className="label-text dm-sans text-white">
-                          Candy Machine ID
-                        </span>
-                      </div>
-                      <input
-                        type="text"
-                        placeholder=""
-                        className="input input-bordered w-full bg-black text-white"
-                        onChange={(e) => candyMachineIdChange(e)}
-                        disabled
-                      />
-                    </label> */}
-                    <div className="mt-4 grid grid-cols-2 gap-4">
+                    <div className="mt-4 text-sm dm-sans  text-neutral-400">
+                      Candy Machine ID: {selectedBlink.candymachine_id}
+                    </div>
+                    <div className="mt-2 grid grid-cols-2 gap-4">
                       <label className="form-control">
                         <div className="label">
                           <span className="label-text dm-sans text-white">
@@ -202,9 +212,9 @@ export default function Dashboard() {
                         </div>
                         <input
                           type="text"
-                          placeholder=""
+                          value={title}
                           className="input input-bordered w-full bg-black text-white"
-                          onChange={(e) => titleChange(e)}
+                          onChange={(e) => setTitle(e.target.value)}
                         />
                       </label>
                       <label className="form-control">
@@ -215,9 +225,9 @@ export default function Dashboard() {
                         </div>
                         <input
                           type="text"
-                          placeholder=""
+                          value={label}
                           className="input input-bordered w-full bg-black text-white"
-                          onChange={(e) => labelChange(e)}
+                          onChange={(e) => setLabel(e.target.value)}
                         />
                       </label>
                     </div>
@@ -229,9 +239,9 @@ export default function Dashboard() {
                       </div>
                       <input
                         type="text"
-                        placeholder=""
+                        value={iconUrl}
                         className="input input-bordered w-full bg-black text-white"
-                        onChange={(e) => iconUrlChange(e)}
+                        onChange={(e) => setIconUrl(e.target.value)}
                       />
                     </label>
                     <label className="form-control">
@@ -242,12 +252,21 @@ export default function Dashboard() {
                       </div>
                       <textarea
                         className="textarea textarea-bordered h-24 w-full bg-black text-white"
-                        placeholder=""
-                        onChange={(e) => descriptionChange(e)}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                       ></textarea>
                     </label>
-                    <div className="w-full flex justify-center">
-                      <div className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer">
+                    <div className="w-full flex justify-center gap-5">
+                      <div
+                        className="mt-5 text-xl bg-neutral-500 hover:bg-neutral-600 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+                        onClick={() => setSelectedBlink(null)}
+                      >
+                        Cancel
+                      </div>
+                      <div
+                        className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+                        onClick={handleSubmit} // Call handleSubmit on click
+                      >
                         Save!
                       </div>
                     </div>

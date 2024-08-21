@@ -64,23 +64,19 @@ export const createBlink = async (
 
 export const updateBlink = async (
   id: number,
-  candyMachineId: string,
   title: string,
   label: string,
   iconUrl: string,
   description: string,
-  currentTime: number
 ) => {
   try {
     const { data, error } = await supabase
       .from("blinks")
       .update({
-        candymachine_id: candyMachineId,
         title: title,
         label: label,
         image_url: iconUrl,
         description: description,
-        updated_at: currentTime,
       })
       .eq("id", id)
       .select();
