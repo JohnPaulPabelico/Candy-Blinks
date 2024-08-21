@@ -1,9 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
+import { createClient } from "@supabase/supabase-js";
 
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
+import { IoIosClose } from "react-icons/io";
+
+import Swal from "sweetalert2";
+
+import supabase from "../lib/supabaseClient";
+import { createBlink } from "../lib/blinkService";
 
 export default function Dashboard() {
   const [candyMachineId, setCandyMachineId] = useState("");
@@ -12,16 +19,63 @@ export default function Dashboard() {
   const [iconUrl, setIconUrl] = useState("");
   const [description, setDescription] = useState("");
 
-  // // Get the userId from auth() -- if null, the user is not signed in
-  // const { userId } = auth();
+  const [success, setSuccess] = useState(false);
 
-  // if (userId) {
-  //   // Query DB for user specific information or display assets only to signed in users
-  // }
+  const { userId } = useAuth();
 
-  // // Get the Backend API User object when you need access to the user's information
-  // const user = await currentUser();
-  // // Use `user` to render user details or create UI elements
+  const ref = useRef<HTMLFormElement>(null);
+
+  const handleCreateBlink = async () => {
+    if (
+      !candyMachineId ||
+      !title ||
+      !label ||
+      !iconUrl ||
+      !description ||
+      !userId
+    ) {
+      console.error("All fields must be filled");
+      return;
+    }
+
+    try {
+      const currentTime = new Date().getTime();
+      const data = await createBlink(
+        candyMachineId || "", // Default to empty string
+        title || "",
+        label || "",
+        iconUrl || "",
+        description || "",
+        userId || "", // Default to empty string
+        currentTime
+      );
+
+      console.log("data: ", data);
+      ref.current?.reset();
+      setSuccess(true);
+      setCandyMachineId("");
+      setTitle("");
+      setLabel("");
+      setIconUrl("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error creating blink: ", error);
+    }
+  };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    background: "#f87171",
+    color: "#fff",
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
 
   const candyMachineIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -53,11 +107,24 @@ export default function Dashboard() {
     console.log("description: ", description);
   };
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      Toast.fire({
+        icon: "success",
+        title: "Blink copied successfully",
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      alert("Failed to copy to clipboard.");
+    }
+  };
+
   return (
     <SignedIn>
       <NavBar />
       <div className="min-h-dvh flex gap-5 justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">
-        <form className="w-full max-w-xl">
+        <form className="w-full max-w-xl" ref={ref}>
           <div className=" text-5xl dm-sans font-semibold text-white">
             Create a <span className="text-red-400">Candy Blink</span>
           </div>
@@ -125,12 +192,14 @@ export default function Dashboard() {
             ></textarea>
           </label>
           <div className="w-full flex justify-center">
-            <button className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg">
+            <div
+              className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+              onClick={handleCreateBlink}
+            >
               Save!
-            </button>
+            </div>
           </div>
         </form>
-
         <div>
           <div className="label">
             <span className="label-text dm-sans text-white">Blink Preview</span>
@@ -169,7 +238,7 @@ export default function Dashboard() {
                   {title ? title : "Title"}
                 </div>
               </div>
-              <div className="text-sm dm-sans text-neutral-400 text-wrap w-full">
+              <div className="mt-1 text-sm dm-sans text-neutral-400 text-wrap w-full">
                 {description
                   ? description
                   : "Description - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."}
@@ -181,7 +250,44 @@ export default function Dashboard() {
               </button>
             </div>
           </div>
-        </div>
+        </div>{" "}
+        {success && (
+          <>
+            <style>{`
+      body {
+        overflow: hidden;
+      }
+    `}</style>
+            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all fade-in pt-[76px] bg-black bg-opacity-60 min-h-dvh">
+              <div className="flex items-center justify-center ">
+                <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 -translate-y-24">
+                  <IoIosClose
+                    className="text-4xl ml-auto cursor-pointer hover:text-neutral-300 translate-x-5 -translate-y-5 transition text-white"
+                    onClick={() => {
+                      setSuccess(false);
+                    }}
+                  />
+                  <p className="text-white font-bold lg:text-5xl text-4xl -translate-y-8 text-center dm-sans mt-5">
+                    Success!
+                  </p>
+                  <p className="dm-sans lg:text-2xl text-xl mt-3 pixelify -translate-y-8 text-center text-white font-semibold">
+                    <span className="text-red-400">Candy Blink</span> Created
+                  </p>
+                  <div
+                    className="text-center text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+                    onClick={() => {
+                      copyToClipboard(
+                        "https://candyblinks.fun/api/actions/mint"
+                      );
+                    }}
+                  >
+                    Click to Copy Blink
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </SignedIn>
   );
