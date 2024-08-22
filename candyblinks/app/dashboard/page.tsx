@@ -7,7 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import supabase from "../lib/supabaseClient";
-import { updateBlink } from "../lib/blinkService";
+import { updateBlink } from "../lib/supabaseRequests";
 import Image from "next/image";
 
 interface TruncatedTextProps {
@@ -24,28 +24,29 @@ interface Blink {
   image_url: string;
   description: string;
   created_at: number;
-  clerk_user_id: string;
+  user_id: string;
 }
 
 export default function Dashboard() {
   const { userId } = useAuth();
   const [blinks, setBlinks] = useState<Blink[]>([]); // State to hold the fetched blinks
   const [selectedBlink, setSelectedBlink] = useState<Blink | null>(null);
-  const [candyMachineId, setCandyMachineId] = useState("");
   const [title, setTitle] = useState("");
   const [label, setLabel] = useState("");
   const [iconUrl, setIconUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const getBlink = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("blinks")
         .select("*")
-        .eq("clerk_user_id", userId);
+        .eq("user_id", userId);
       if (error) throw error;
 
       setBlinks(data || []); // Update the state with the fetched blinks
+      setLoading(false);
       console.log("data: ", data);
     } catch (error) {
       console.log("error: ", error);
@@ -77,7 +78,6 @@ export default function Dashboard() {
 
   const editBlink = (blink: Blink) => {
     setSelectedBlink(blink);
-    setCandyMachineId(blink.candymachine_id);
     setTitle(blink.title);
     setLabel(blink.label);
     setIconUrl(blink.image_url);
@@ -88,12 +88,14 @@ export default function Dashboard() {
     if (selectedBlink) {
       try {
         console.log("selectedBlink: ", selectedBlink);
+        const currentTime = new Date().getTime();
         const updatedBlink = await updateBlink(
           selectedBlink.id,
           title,
           label,
           iconUrl,
-          description
+          description,
+          currentTime
         );
         setBlinks(
           blinks.map((blink) =>
@@ -106,30 +108,6 @@ export default function Dashboard() {
         alert("Failed to update blink.");
       }
     }
-  };
-
-  const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setTitle(inputValue);
-    console.log("title: ", title);
-  };
-
-  const labelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setLabel(inputValue);
-    console.log("label: ", label);
-  };
-
-  const iconUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setIconUrl(inputValue);
-    console.log("iconUrl: ", iconUrl);
-  };
-
-  const descriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const inputValue = e.target.value;
-    setDescription(inputValue);
-    console.log("description: ", description);
   };
 
   const TruncatedText: React.FC<TruncatedTextProps> = ({
@@ -188,6 +166,26 @@ export default function Dashboard() {
                 </div>
               </div>
             ))}
+            <div
+              className={`mr-5 mt-5 bg-neutral-900 border-pink-950 border-2 p-5 text-white rounded-xl w-fit hover:shadow-lg hover:shadow-pink-900/50 hover:border-pink-900 transition duration-200 ${
+                loading ? "block" : "hidden"
+              }`}
+            >
+              <div>
+                <div className="flex justify-center aspect-square overflow-hidden rounded-lg">
+                  <Image
+                    src="/CandyBlinks.png"
+                    alt="logo"
+                    width={300}
+                    height={300}
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <div className="mt-4 text-xl font-bold flex justify-center text-neutral-600">
+                <span className="loading loading-dots loading-lg"></span>
+              </div>
+            </div>
           </div>
         </div>
         {selectedBlink && (

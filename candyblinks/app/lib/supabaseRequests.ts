@@ -6,7 +6,7 @@ export const getBlinks = async (userId: string) => {
     const { data, error } = await supabase
       .from("blinks")
       .select("*")
-      .eq("clerk_user_id", userId);
+      .eq("user_id", userId);
 
     if (error) throw error;
 
@@ -49,7 +49,7 @@ export const createBlink = async (
         image_url: iconUrl,
         description: description,
         created_at: currentTime,
-        clerk_user_id: userId,
+        user_id: userId,
       })
       .select();
 
@@ -68,6 +68,7 @@ export const updateBlink = async (
   label: string,
   iconUrl: string,
   description: string,
+  currentTime: number
 ) => {
   try {
     const { data, error } = await supabase
@@ -77,6 +78,7 @@ export const updateBlink = async (
         label: label,
         image_url: iconUrl,
         description: description,
+        updated_at: currentTime,
       })
       .eq("id", id)
       .select();
