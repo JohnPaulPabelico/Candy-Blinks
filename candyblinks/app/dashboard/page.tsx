@@ -8,6 +8,7 @@ import { MdDelete } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import supabase from "../lib/supabaseClient";
 import { updateBlink } from "../lib/blinkService";
+import Image from "next/image";
 
 interface TruncatedTextProps {
   text: string;
@@ -150,19 +151,20 @@ export default function Dashboard() {
       <div className=" min-h-dvh flex justify-center items-start bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">
         <div className="w-3/4 mt-36  mb-36">
           <span className="text-2xl text-white">Your Candy Blinks</span>
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {blinks.map((blink) => (
               <div
                 key={blink.id}
                 className="mr-5 mt-5 bg-neutral-900 border-pink-950 border-2 p-5 text-white rounded-xl w-fit hover:shadow-lg hover:shadow-pink-900/50 hover:border-pink-900 transition duration-200"
               >
                 <div>
-                  <div className="text-3xl rounded-lg flex justify-center ">
-                    <img
+                  <div className="flex justify-center aspect-square overflow-hidden rounded-lg">
+                    <Image
                       src={blink.image_url}
                       alt="logo"
                       width={300}
                       height={300}
+                      className="object-cover"
                     />
                   </div>
                 </div>

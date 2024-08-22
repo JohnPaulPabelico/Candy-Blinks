@@ -172,7 +172,12 @@ export default function Dashboard() {
           </div>
           <label className="form-control">
             <div className="label">
-              <span className="label-text dm-sans text-white">Icon URL</span>
+              <span className="label-text dm-sans text-white">
+                Icon URL{" "}
+                <span className="text-neutral-400 italic">
+                  (Only Imgur links are supported right now)
+                </span>
+              </span>
             </div>
             <input
               type="text"
@@ -206,7 +211,7 @@ export default function Dashboard() {
           </div>
           <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2">
             {iconUrl ? (
-              <img
+              <Image
                 src={iconUrl}
                 alt="icon"
                 width={400}
