@@ -1,16 +1,25 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { createClient } from "@supabase/supabase-js";
-
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
 import { IoIosClose } from "react-icons/io";
-
 import Swal from "sweetalert2";
-
-import supabase from "../lib/supabaseClient";
 import { createBlink } from "../lib/blinkService";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { publicKey } from "@metaplex-foundation/umi";
+import {
+  fetchCandyMachine,
+  CandyMachine,
+} from "@metaplex-foundation/mpl-candy-machine";
+import { clusterApiUrl } from "@solana/web3.js";
+
+type InputField =
+  | "candyMachineId"
+  | "title"
+  | "label"
+  | "iconUrl"
+  | "description";
 
 export default function Dashboard() {
   const [candyMachineId, setCandyMachineId] = useState("");
@@ -18,12 +27,25 @@ export default function Dashboard() {
   const [label, setLabel] = useState("");
   const [iconUrl, setIconUrl] = useState("");
   const [description, setDescription] = useState("");
-
   const [success, setSuccess] = useState(false);
-
   const { userId } = useAuth();
-
   const ref = useRef<HTMLFormElement>(null);
+
+  const [touchedInputs, setTouchedInputs] = useState<
+    Record<InputField, boolean>
+  >({
+    candyMachineId: false,
+    title: false,
+    label: false,
+    iconUrl: false,
+    description: false,
+  });
+
+  const handleBlur = (field: InputField) => {
+    setTouchedInputs((prev) => ({ ...prev, [field]: true }));
+  };
+
+  const endpoint = clusterApiUrl("devnet");
 
   const handleCreateBlink = async () => {
     if (
@@ -35,6 +57,29 @@ export default function Dashboard() {
       !userId
     ) {
       console.error("All fields must be filled");
+      return;
+    }
+
+    try {
+      const candyMachineAddress = publicKey(candyMachineId);
+      const umi = createUmi(endpoint);
+      try {
+        const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
+        console.log("CandyMachine:", candyMachine);
+      } catch (error) {
+        console.error("Error fetching candy machine:", error);
+        Toast.fire({
+          icon: "warning",
+          title: "Cannot find Candy Machine",
+        });
+        return;
+      }
+    } catch (error) {
+      console.error("Error creating public key:", error);
+      Toast.fire({
+        icon: "warning",
+        title: "Candy Machine ID is not valid",
+      });
       return;
     }
 
@@ -80,30 +125,35 @@ export default function Dashboard() {
   const candyMachineIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setCandyMachineId(inputValue);
+    setTouchedInputs((prev) => ({ ...prev, candyMachineId: true }));
     console.log("candyMachineId: ", candyMachineId);
   };
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setTitle(inputValue);
+    setTouchedInputs((prev) => ({ ...prev, title: true }));
     console.log("title: ", title);
   };
 
   const labelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setLabel(inputValue);
+    setTouchedInputs((prev) => ({ ...prev, label: true }));
     console.log("label: ", label);
   };
 
   const iconUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setIconUrl(inputValue);
+    setTouchedInputs((prev) => ({ ...prev, iconUrl: true }));
     console.log("iconUrl: ", iconUrl);
   };
 
   const descriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
     setDescription(inputValue);
+    setTouchedInputs((prev) => ({ ...prev, description: true }));
     console.log("description: ", description);
   };
 
@@ -142,8 +192,13 @@ export default function Dashboard() {
             <input
               type="text"
               placeholder=""
-              className="input input-bordered w-full bg-black text-white"
+              className={`input input-bordered w-full bg-black text-white ${
+                touchedInputs.candyMachineId && !candyMachineId
+                  ? "input-error"
+                  : ""
+              }`}
               onChange={(e) => candyMachineIdChange(e)}
+              onBlur={() => handleBlur("candyMachineId")}
             />
           </label>
           <div className="grid grid-cols-2 gap-4">
@@ -154,8 +209,13 @@ export default function Dashboard() {
               <input
                 type="text"
                 placeholder=""
-                className="input input-bordered w-full bg-black text-white"
+                className={`input input-bordered w-full bg-black text-white ${
+                  touchedInputs.title && !title
+                    ? "input-error"
+                    : ""
+                }`}
                 onChange={(e) => titleChange(e)}
+                onBlur={() => handleBlur("title")}
               />
             </label>
             <label className="form-control">
@@ -165,8 +225,11 @@ export default function Dashboard() {
               <input
                 type="text"
                 placeholder=""
-                className="input input-bordered w-full bg-black text-white"
+                className={`input input-bordered w-full bg-black text-white ${
+                  touchedInputs.label && !label ? "input-error" : ""
+                }`}
                 onChange={(e) => labelChange(e)}
+                onBlur={() => handleBlur("label")}
               />
             </label>
           </div>
@@ -182,8 +245,11 @@ export default function Dashboard() {
             <input
               type="text"
               placeholder=""
-              className="input input-bordered w-full bg-black text-white"
+              className={`input input-bordered w-full bg-black text-white ${
+                touchedInputs.iconUrl && !iconUrl ? "input-error" : ""
+              }`}
               onChange={(e) => iconUrlChange(e)}
+              onBlur={() => handleBlur("iconUrl")}
             />
           </label>
           <label className="form-control">
@@ -191,9 +257,12 @@ export default function Dashboard() {
               <span className="label-text text-white">Description</span>
             </div>
             <textarea
-              className="textarea textarea-bordered h-24 w-full bg-black text-white"
+              className={`textarea textarea-bordered h-24 w-full bg-black text-white ${
+                touchedInputs.description && !description ? "input-error" : ""
+              }`}
               placeholder=""
               onChange={(e) => descriptionChange(e)}
+              onBlur={() => handleBlur("description")}
             ></textarea>
           </label>
           <div className="w-full flex justify-center">
