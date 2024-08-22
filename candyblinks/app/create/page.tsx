@@ -5,7 +5,7 @@ import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
 import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
-import { createBlink } from "../lib/blinkService";
+import { createBlink } from "../lib/supabaseRequests";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { publicKey } from "@metaplex-foundation/umi";
 import {
@@ -210,9 +210,7 @@ export default function Dashboard() {
                 type="text"
                 placeholder=""
                 className={`input input-bordered w-full bg-black text-white ${
-                  touchedInputs.title && !title
-                    ? "input-error"
-                    : ""
+                  touchedInputs.title && !title ? "input-error" : ""
                 }`}
                 onChange={(e) => titleChange(e)}
                 onBlur={() => handleBlur("title")}

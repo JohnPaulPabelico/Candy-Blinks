@@ -7,7 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import supabase from "../lib/supabaseClient";
-import { updateBlink } from "../lib/blinkService";
+import { updateBlink } from "../lib/supabaseRequests";
 import Image from "next/image";
 
 interface TruncatedTextProps {
@@ -24,7 +24,7 @@ interface Blink {
   image_url: string;
   description: string;
   created_at: number;
-  clerk_user_id: string;
+  user_id: string;
 }
 
 export default function Dashboard() {
@@ -42,7 +42,7 @@ export default function Dashboard() {
       const { data, error } = await supabase
         .from("blinks")
         .select("*")
-        .eq("clerk_user_id", userId);
+        .eq("user_id", userId);
       if (error) throw error;
 
       setBlinks(data || []); // Update the state with the fetched blinks
@@ -88,12 +88,14 @@ export default function Dashboard() {
     if (selectedBlink) {
       try {
         console.log("selectedBlink: ", selectedBlink);
+        const currentTime = new Date().getTime();
         const updatedBlink = await updateBlink(
           selectedBlink.id,
           title,
           label,
           iconUrl,
-          description
+          description,
+          currentTime
         );
         setBlinks(
           blinks.map((blink) =>
