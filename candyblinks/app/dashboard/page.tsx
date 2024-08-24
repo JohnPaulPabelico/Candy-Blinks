@@ -5,10 +5,10 @@ import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { IoIosClose } from "react-icons/io";
 import supabase from "../lib/supabaseClient";
 import { updateBlink } from "../lib/supabaseRequests";
 import Image from "next/image";
+import SkeletonCard from "./components/SkeletonCard";
 
 interface TruncatedTextProps {
   text: string;
@@ -17,6 +17,7 @@ interface TruncatedTextProps {
 }
 
 interface Blink {
+  handle: string;
   id: number;
   candymachine_id: string;
   title: string;
@@ -150,6 +151,8 @@ export default function Dashboard() {
                 <span className="text-sm font-thin">
                   <TruncatedText text={blink.candymachine_id} />
                 </span>
+                <div className="text-sm font-thin">{blink.handle}</div>
+
                 <div className="flex justify-end items-center">
                   <div
                     className="mr-4 mt-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
@@ -166,36 +169,12 @@ export default function Dashboard() {
                 </div>
               </div>
             ))}
-            <div
-              className={`mr-5 mt-5 bg-neutral-900 border-pink-950 border-2 p-5 text-white rounded-xl w-fit hover:shadow-lg hover:shadow-pink-900/50 hover:border-pink-900 transition duration-200 ${
-                loading ? "block" : "hidden"
-              }`}
-            >
-              <div>
-                <div className="flex justify-center aspect-square overflow-hidden rounded-lg">
-                  <Image
-                    src="/CandyBlinks.png"
-                    alt="logo"
-                    width={300}
-                    height={300}
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className="mt-4 text-xl font-bold flex justify-center text-neutral-600">
-                <span className="loading loading-dots loading-lg"></span>
-              </div>
-            </div>
+            <SkeletonCard loading={loading} />
           </div>
         </div>
         {selectedBlink && (
           <>
-            <style>{`
-              body {
-                overflow: hidden;
-              }
-            `}</style>
-            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all pt-[76px] bg-black bg-opacity-60 min-h-dvh">
+            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all pt-[76px] bg-black bg-opacity-60 min-h-dvh overflow-hidden">
               <div className="flex items-center justify-center">
                 <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 -translate-y-24">
                   <form className="w-full max-w-xl">

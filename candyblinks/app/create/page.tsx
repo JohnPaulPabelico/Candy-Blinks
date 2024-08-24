@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
@@ -7,12 +7,19 @@ import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
 import { createBlink } from "../lib/supabaseRequests";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { publicKey } from "@metaplex-foundation/umi";
+import {
+  createNoopSigner,
+  publicKey,
+  signerIdentity,
+} from "@metaplex-foundation/umi";
 import {
   fetchCandyMachine,
   CandyMachine,
+  fetchCandyGuard,
+  mplCandyMachine,
 } from "@metaplex-foundation/mpl-candy-machine";
 import { clusterApiUrl } from "@solana/web3.js";
+import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 
 type InputField =
   | "candyMachineId"
@@ -41,6 +48,19 @@ export default function Dashboard() {
     description: false,
   });
 
+  const generateRandomText = (length: number): string => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+
+    return result;
+  };
+
   const handleBlur = (field: InputField) => {
     setTouchedInputs((prev) => ({ ...prev, [field]: true }));
   };
@@ -62,9 +82,22 @@ export default function Dashboard() {
 
     try {
       const candyMachineAddress = publicKey(candyMachineId);
-      const umi = createUmi(endpoint);
+      const umi = createUmi(endpoint)
+        .use(mplCandyMachine())
+        .use(mplTokenMetadata());
       try {
         const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
+        const candyGuard = await fetchCandyGuard(
+          umi,
+          candyMachine.mintAuthority
+        );
+
+        // // candyGuard.guards; // All guard settings.
+        // // candyGuard.guards.botTax; // Bot Tax settings.
+        // // candyGuard.guards.solPayment; // Sol Payment settings.
+
+        console.log("candyguards:", candyGuard.guards);
+        console.log("solPayment: ", candyGuard.guards.solPayment);
         console.log("CandyMachine:", candyMachine);
       } catch (error) {
         console.error("Error fetching candy machine:", error);
@@ -84,6 +117,7 @@ export default function Dashboard() {
     }
 
     try {
+      const randomText = generateRandomText(8);
       const currentTime = new Date().getTime();
       const data = await createBlink(
         candyMachineId || "", // Default to empty string
@@ -92,6 +126,7 @@ export default function Dashboard() {
         iconUrl || "",
         description || "",
         userId || "", // Default to empty string
+        randomText || "",
         currentTime
       );
 
@@ -348,9 +383,7 @@ export default function Dashboard() {
                   <div
                     className="text-center text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
                     onClick={() => {
-                      copyToClipboard(
-                        "https://candyblinks.fun/api/actions/mint"
-                      );
+                      copyToClipboard(`https://candyblinks.fun/mint/`);
                     }}
                   >
                     Click to Copy Blink

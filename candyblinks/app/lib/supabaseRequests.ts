@@ -37,6 +37,7 @@ export const createBlink = async (
   iconUrl: string,
   description: string,
   userId: string,
+  handle: string,
   currentTime: number
 ) => {
   try {
@@ -50,6 +51,7 @@ export const createBlink = async (
         description: description,
         created_at: currentTime,
         user_id: userId,
+        handle: handle,
       })
       .select();
 

@@ -22,21 +22,38 @@ import {
   Transaction,
 } from "@solana/web3.js";
 import { toWeb3JsLegacyTransaction } from "@metaplex-foundation/umi-web3js-adapters";
+import supabase from "@/app/lib/supabaseClient";
+import { useAuth } from "@clerk/nextjs";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
-const candyMachineAddress = publicKey(
-  "3vmJZBmhNUvrnrGmnzjvmUWuQnck2XhZEFoAWBd8q9d3"
-);
+
 const treasury = publicKey("9QZqqJfKRuoGKTaCgUvjQMMUNpaxhPC3fvn2y8iPZ4uU");
 
 type MintTransactionParam = {
   toAddress: string;
+  handle: string;
+};
+
+export const getBlink = async (handle: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("blinks")
+      .select("*")
+      .eq("handle", handle);
+    if (error) throw error;
+
+    console.log("data: ", data);
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
 };
 
 export const mintTransaction = async (
   params: MintTransactionParam
 ): Promise<Transaction> => {
-  const { toAddress } = params;
+  const { toAddress, handle } = params;
 
   const toPubKey = publicKey(toAddress);
   const pubKeySigner = createNoopSigner(toPubKey);
@@ -46,6 +63,15 @@ export const mintTransaction = async (
       .use(signerIdentity(pubKeySigner))
       .use(mplCandyMachine())
       .use(mplTokenMetadata());
+
+    const blinksData = await getBlink(handle);
+    if (blinksData.length === 0) {
+      throw new Error("No blinks found for the given handle");
+    }
+
+    // Access the first item in the array
+    const firstBlink = blinksData[0];
+    const candyMachineAddress = publicKey(firstBlink.candymachine_id);
 
     const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
     const candyGuard = await safeFetchCandyGuard(
@@ -98,10 +124,10 @@ export const mintTransaction = async (
   return transaction;
 };
 
-export const getItemsRedeemed = async () => {
-  const umi = createUmi(ENDPOINT);
-  const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
-  const itemsRedeemed = Number(candyMachine.itemsRedeemed);
+// export const getItemsRedeemed = async () => {
+//   const umi = createUmi(ENDPOINT);
+//   const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
+//   const itemsRedeemed = Number(candyMachine.itemsRedeemed);
 
-  return itemsRedeemed;
-};
+//   return itemsRedeemed;
+// };
