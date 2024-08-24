@@ -17,6 +17,7 @@ interface TruncatedTextProps {
 }
 
 interface Blink {
+  handle: string;
   id: number;
   candymachine_id: string;
   title: string;
@@ -150,6 +151,8 @@ export default function Dashboard() {
                 <span className="text-sm font-thin">
                   <TruncatedText text={blink.candymachine_id} />
                 </span>
+                <div className="text-sm font-thin">{blink.handle}</div>
+
                 <div className="flex justify-end items-center">
                   <div
                     className="mr-4 mt-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
