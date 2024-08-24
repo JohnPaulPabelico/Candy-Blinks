@@ -46,29 +46,11 @@ export const OPTIONS = GET;
 
 export const POST = async (
   req: Request,
-  { params, body }: { params: { handle: string }; body: ActionPostRequest }
+  { params }: { params: { handle: string } }
 ) => {
-  console.log("Handle: ", params.handle);
-  console.log("Body: ", body);
-  // let body: ActionPostRequest;
-  try {
-    // body = await req.json();
-  } catch (error) {
-    if (
-      error instanceof SyntaxError &&
-      error.message.includes("Unexpected end of JSON input")
-    ) {
-      console.error("Empty or invalid JSON in request body");
-      return Response.json(
-        { error: "Empty or invalid request body" },
-        { status: 400 }
-      );
-    }
-    throw error;
-  }
-
-  const userPubKey = body.account;
   const handle = params.handle;
+  const body: ActionPostRequest = await req.json();
+  const userPubKey = body.account;
 
   try {
     const transaction = await mintTransaction({
