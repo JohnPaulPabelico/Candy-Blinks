@@ -148,20 +148,23 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="mt-4 text-xl font-bold">{blink.title}</div>
-                <span className="text-sm font-thin">
+                <span className="text-sm font-thin text-neutral-400">
                   <TruncatedText text={blink.candymachine_id} />
                 </span>
-                <div className="text-sm font-thin">{blink.handle}</div>
 
-                <div className="flex justify-end items-center">
+                <div className="mt-4 flex justify-start items-center">
+                  <div className="text-sm font-semibold mr-auto">
+                    URL Handle:{" "}
+                    <span className="font-light">{blink.handle}</span>
+                  </div>
                   <div
-                    className="mr-4 mt-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
+                    className="mr-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
                     onClick={() => editBlink(blink)}
                   >
                     <FaEdit />
                   </div>
                   <div
-                    className="mt-4 text-xl font-bold text-red-600 hover:text-red-400 cursor-pointer transition duration-200"
+                    className=" text-xl font-bold text-red-600 hover:text-red-400 cursor-pointer transition duration-200"
                     onClick={() => deleteBlink(blink.id)}
                   >
                     <MdDelete />
