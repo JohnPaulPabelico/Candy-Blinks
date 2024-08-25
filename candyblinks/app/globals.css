@@ -71,3 +71,7 @@
 html {
   scroll-behavior: smooth;
 }
+
+.tooltip {
+  --tooltip-color: #0a0a0a;
+}
