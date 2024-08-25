@@ -34,6 +34,15 @@ type MintTransactionParam = {
   handle: string;
 };
 
+interface GuardOption {
+  __option: "None" | "Some";
+  // Add other potential properties for the guard types here
+}
+
+interface Guards {
+  [key: string]: GuardOption | undefined;
+}
+
 export const getBlink = async (handle: string) => {
   try {
     const { data, error } = await supabase
@@ -96,9 +105,7 @@ export const mintTransaction = async (
             nftMint,
             collectionMint: candyMachine.collectionMint,
             collectionUpdateAuthority: candyMachine.authority,
-            mintArgs: {
-              solPayment: some({ destination: treasury }),
-            },
+            mintArgs: getMintArgs(candyGuard?.guards),
           })
         )
         .setBlockhash(latestBlockhashResult.blockhash)
@@ -131,3 +138,18 @@ export const mintTransaction = async (
 
 //   return itemsRedeemed;
 // };
+
+function getMintArgs(guards: Guards | undefined) {
+  const mintArgs: { [key: string]: GuardOption } = {};
+
+  if (!guards) return mintArgs;
+
+  // Iterate through each guard and add it to mintArgs if it has a value
+  for (const [key, value] of Object.entries(guards)) {
+    if (value && value.__option !== "None") {
+      mintArgs[key] = value;
+    }
+  }
+
+  return mintArgs;
+}
