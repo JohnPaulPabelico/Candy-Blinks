@@ -403,14 +403,14 @@ export default function Dashboard() {
                   <p className="dm-sans lg:text-2xl text-xl mt-3 pixelify -translate-y-8 text-center text-white font-semibold">
                     <span className="text-red-400">Candy Blink</span> Created
                   </p>
-                  <div
+                  {/* <div
                     className="text-center text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
                     onClick={() => {
                       copyToClipboard(candyBlinkUrl);
                     }}
                   >
                     Click to Copy Blink
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
