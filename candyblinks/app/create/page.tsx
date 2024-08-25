@@ -23,6 +23,15 @@ import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 
 const candyBlinkUrl = process.env.NEXT_PUBLIC_CANDYBLINK_URL || "";
 
+interface GuardOption {
+  __option: "None" | "Some";
+  // Add other potential properties for the guard types here
+}
+
+interface Guards {
+  [key: string]: GuardOption | undefined;
+}
+
 type InputField =
   | "candyMachineId"
   | "title"
@@ -81,9 +90,9 @@ export default function Dashboard() {
           umi,
           candyMachine.mintAuthority
         );
-        console.log("candyguards:", candyGuard.guards);
-        console.log("solPayment: ", candyGuard.guards.solPayment);
-        console.log("CandyMachine:", candyMachine);
+        // console.log("candyguards:", candyGuard.guards);
+        // console.log("solPayment: ", candyGuard.guards.solPayment);
+        // console.log("CandyMachine:", candyMachine);
       } catch (error) {
         console.error("Error fetching candy machine:", error);
       }
