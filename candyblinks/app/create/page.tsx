@@ -69,6 +69,26 @@ export default function Dashboard() {
 
   const endpoint = clusterApiUrl("devnet");
 
+  const fetchCandyGuards = async () => {
+    if (candyMachineId)
+      try {
+        const umi = createUmi(endpoint)
+          .use(mplCandyMachine())
+          .use(mplTokenMetadata());
+        const candyMachineAddress = publicKey(candyMachineId);
+        const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
+        const candyGuard = await fetchCandyGuard(
+          umi,
+          candyMachine.mintAuthority
+        );
+        console.log("candyguards:", candyGuard.guards);
+        console.log("solPayment: ", candyGuard.guards.solPayment);
+        console.log("CandyMachine:", candyMachine);
+      } catch (error) {
+        console.error("Error fetching candy machine:", error);
+      }
+  };
+
   const handleCreateBlink = async () => {
     if (
       !candyMachineId ||
@@ -306,7 +326,13 @@ export default function Dashboard() {
               onClick={handleCreateBlink}
             >
               Save!
-            </div>
+            </div>{" "}
+            {/* <div
+              className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+              onClick={fetchCandyGuards}
+            >
+              test!
+            </div> */}
           </div>
         </form>
         <div>
@@ -362,7 +388,7 @@ export default function Dashboard() {
         </div>{" "}
         {success && (
           <>
-              <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all fade-in pt-[76px] bg-black bg-opacity-60 min-h-dvh overflow-hidden">
+            <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-center transition-all fade-in pt-[76px] bg-black bg-opacity-60 min-h-dvh overflow-hidden">
               <div className="flex items-center justify-center ">
                 <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 -translate-y-24">
                   <IoIosClose
