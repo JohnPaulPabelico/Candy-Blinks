@@ -12,6 +12,7 @@ import SkeletonCard from "./components/SkeletonCard";
 import { FaRegCopy } from "react-icons/fa";
 import TruncatedText from "../components/TruncatedText";
 import Swal from "sweetalert2";
+import EmptySkeletonCard from "./components/EmptySkeletonCard";
 
 interface TruncatedTextSplitProps {
   text: string;
@@ -40,6 +41,7 @@ export default function Dashboard() {
   const [iconUrl, setIconUrl] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isBlinksFound, setIsBlinksFound] = useState(true);
 
   const getBlink = useCallback(async () => {
     try {
@@ -50,6 +52,14 @@ export default function Dashboard() {
       if (error) throw error;
 
       setBlinks(data || []); // Update the state with the fetched blinks
+
+      if (!data || data.length === 0) {
+        setLoading(false);
+        setIsBlinksFound(false);
+        return;
+      }
+
+      setIsBlinksFound(true);
       setLoading(false);
       console.log("data: ", data);
     } catch (error) {
@@ -224,6 +234,10 @@ export default function Dashboard() {
               </div>
             ))}
             <SkeletonCard loading={loading} />
+            <EmptySkeletonCard
+              loading={loading}
+              isBlinksFound={isBlinksFound}
+            />
           </div>
         </div>
         {selectedBlink && (
