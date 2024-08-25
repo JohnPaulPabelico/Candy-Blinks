@@ -13,6 +13,7 @@ import {
   mplCandyMachine,
   safeFetchCandyGuard,
 } from "@metaplex-foundation/mpl-candy-machine";
+
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 import { setComputeUnitLimit } from "@metaplex-foundation/mpl-toolbox";
 import {
@@ -23,7 +24,6 @@ import {
 } from "@solana/web3.js";
 import { toWeb3JsLegacyTransaction } from "@metaplex-foundation/umi-web3js-adapters";
 import supabase from "@/app/lib/supabaseClient";
-import { useAuth } from "@clerk/nextjs";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
 

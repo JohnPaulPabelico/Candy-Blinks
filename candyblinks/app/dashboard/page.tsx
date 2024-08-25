@@ -9,8 +9,11 @@ import supabase from "../lib/supabaseClient";
 import { updateBlink } from "../lib/supabaseRequests";
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
+import { FaRegCopy } from "react-icons/fa";
+import TruncatedText from "../components/TruncatedText";
+import Swal from "sweetalert2";
 
-interface TruncatedTextProps {
+interface TruncatedTextSplitProps {
   text: string;
   startChars?: number;
   endChars?: number;
@@ -111,7 +114,34 @@ export default function Dashboard() {
     }
   };
 
-  const TruncatedText: React.FC<TruncatedTextProps> = ({
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    background: "#ffffff",
+    color: "#000000",
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      Toast.fire({
+        icon: "success",
+        title: "Blink copied successfully",
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      alert("Failed to copy to clipboard.");
+    }
+  };
+
+  const TruncatedTextSplit: React.FC<TruncatedTextSplitProps> = ({
     text,
     startChars = 6,
     endChars = 6,
@@ -147,24 +177,48 @@ export default function Dashboard() {
                     />
                   </div>
                 </div>
-                <div className="mt-4 text-xl font-bold">{blink.title}</div>
-                <span className="text-sm font-thin">
-                  <TruncatedText text={blink.candymachine_id} />
-                </span>
-                <div className="text-sm font-thin">{blink.handle}</div>
-
-                <div className="flex justify-end items-center">
+                <div className="mt-4 flex justify-start items-center">
+                  <div className="mr-auto text-xl font-bold">{blink.title}</div>
                   <div
-                    className="mr-4 mt-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
+                    className="mr-4 text-xl font-bold text-neutral-500 hover:text-neutral-300 cursor-pointer transition duration-200"
                     onClick={() => editBlink(blink)}
                   >
                     <FaEdit />
                   </div>
                   <div
-                    className="mt-4 text-xl font-bold text-red-600 hover:text-red-400 cursor-pointer transition duration-200"
+                    className=" text-xl font-bold text-red-600 hover:text-red-400 cursor-pointer transition duration-200"
                     onClick={() => deleteBlink(blink.id)}
                   >
                     <MdDelete />
+                  </div>
+                </div>
+                <span className="text-sm font-thin text-neutral-400">
+                  <TruncatedTextSplit text={blink.candymachine_id} />
+                </span>
+
+                <div className="mt-4 flex justify-start items-center">
+                  <div className="text-sm font-semibold mr-auto flex items-center justify-start ">
+                    {/* <span className="font-light text-sm">
+                      <TruncatedText
+                        text={"candyblinks.fun/mint/" + blink.handle}
+                        maxLength={25}
+                      />
+                    </span> */}
+                    Handle: &nbsp;
+                    <span className="font-light text-sm">
+                      {blink.handle} &nbsp;
+                    </span>
+                    <span
+                      className="text-neutral-400 text-lg cursor-pointer hover:text-white transition duration-200 tooltip"
+                      data-tip={"https://candyblinks.fun/mint/" + blink.handle}
+                      onClick={() => {
+                        copyToClipboard(
+                          "https://candyblinks.fun/mint/" + blink.handle
+                        );
+                      }}
+                    >
+                      <FaRegCopy />
+                    </span>
                   </div>
                 </div>
               </div>
