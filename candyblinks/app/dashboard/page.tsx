@@ -1,40 +1,19 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import supabase from "../lib/supabaseClient";
-import { updateBlink } from "../lib/supabaseRequests";
+import { getBlinks, updateBlink, deleteBlink } from "../lib/supabaseRequests";
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
 import { FaRegCopy } from "react-icons/fa";
-import TruncatedText from "../components/TruncatedText";
 import Swal from "sweetalert2";
 import EmptySkeletonCard from "./components/EmptySkeletonCard";
 
-interface TruncatedTextSplitProps {
-  text: string;
-  startChars?: number;
-  endChars?: number;
-}
-
-interface Blink {
-  handle: string;
-  id: number;
-  candymachine_id: string;
-  title: string;
-  label: string;
-  image_url: string;
-  description: string;
-  created_at: number;
-  user_id: string;
-}
-
 export default function Dashboard() {
   const { userId } = useAuth();
-  const [blinks, setBlinks] = useState<Blink[]>([]); // State to hold the fetched blinks
+  const [blinks, setBlinks] = useState<Blink[]>([]);
   const [selectedBlink, setSelectedBlink] = useState<Blink | null>(null);
   const [title, setTitle] = useState("");
   const [label, setLabel] = useState("");
@@ -45,13 +24,9 @@ export default function Dashboard() {
 
   const getBlink = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from("blinks")
-        .select("*")
-        .eq("user_id", userId);
-      if (error) throw error;
+      const data = await getBlinks(userId!);
 
-      setBlinks(data || []); // Update the state with the fetched blinks
+      setBlinks(data);
 
       if (!data || data.length === 0) {
         setLoading(false);
@@ -67,17 +42,18 @@ export default function Dashboard() {
     }
   }, [userId]);
 
-  const deleteBlink = async (id: number) => {
+  const removeBlink = async (id: number) => {
     try {
-      const { error } = await supabase
-        .from("blinks") // Replace "blinks" with your actual table name if different
-        .delete()
-        .eq("id", id);
+      const deletedBlinkId = await deleteBlink(id);
 
-      if (error) throw error;
-
-      // Update the state to remove the deleted blink
-      setBlinks(blinks.filter((blink) => blink.id !== id));
+      setBlinks((prevBlinks) =>
+        prevBlinks.filter((blink) => blink.id !== deletedBlinkId)
+      );
+      Toast.fire({
+        icon: "success",
+        title: "Blink deleted successfully",
+      });
+      if (blinks.length === 0) setIsBlinksFound(false);
     } catch (error) {
       console.error("Failed to delete blink: ", error);
       alert("Failed to delete blink.");
@@ -116,7 +92,7 @@ export default function Dashboard() {
             blink.id === selectedBlink.id ? (updatedBlink[0] as Blink) : blink
           )
         );
-        setSelectedBlink(null); // Close the edit form
+        setSelectedBlink(null);
       } catch (error) {
         console.error("Failed to update blink: ", error);
         alert("Failed to update blink.");
@@ -197,7 +173,7 @@ export default function Dashboard() {
                   </div>
                   <div
                     className=" text-xl font-bold text-red-600 hover:text-red-400 cursor-pointer transition duration-200"
-                    onClick={() => deleteBlink(blink.id)}
+                    onClick={() => removeBlink(blink.id)}
                   >
                     <MdDelete />
                   </div>
@@ -208,12 +184,6 @@ export default function Dashboard() {
 
                 <div className="mt-4 flex justify-start items-center">
                   <div className="text-sm font-semibold mr-auto flex items-center justify-start ">
-                    {/* <span className="font-light text-sm">
-                      <TruncatedText
-                        text={"candyblinks.fun/mint/" + blink.handle}
-                        maxLength={25}
-                      />
-                    </span> */}
                     Handle: &nbsp;
                     <span className="font-light text-sm">
                       {blink.handle} &nbsp;
@@ -314,7 +284,7 @@ export default function Dashboard() {
                       </div>
                       <div
                         className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
-                        onClick={handleSubmit} // Call handleSubmit on click
+                        onClick={handleSubmit}
                       >
                         Save!
                       </div>

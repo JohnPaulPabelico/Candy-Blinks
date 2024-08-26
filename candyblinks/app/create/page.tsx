@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
@@ -7,37 +7,15 @@ import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
 import { createBlink } from "../lib/supabaseRequests";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import {
-  createNoopSigner,
-  publicKey,
-  signerIdentity,
-} from "@metaplex-foundation/umi";
+import { publicKey } from "@metaplex-foundation/umi";
 import {
   fetchCandyMachine,
-  CandyMachine,
-  fetchCandyGuard,
   mplCandyMachine,
 } from "@metaplex-foundation/mpl-candy-machine";
 import { clusterApiUrl } from "@solana/web3.js";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 
 const candyBlinkUrl = process.env.NEXT_PUBLIC_CANDYBLINK_URL || "";
-
-interface GuardOption {
-  __option: "None" | "Some";
-  // Add other potential properties for the guard types here
-}
-
-interface Guards {
-  [key: string]: GuardOption | undefined;
-}
-
-type InputField =
-  | "candyMachineId"
-  | "title"
-  | "label"
-  | "iconUrl"
-  | "description";
 
 export default function Dashboard() {
   const [candyMachineId, setCandyMachineId] = useState("");
@@ -78,26 +56,6 @@ export default function Dashboard() {
 
   const endpoint = clusterApiUrl("devnet");
 
-  const fetchCandyGuards = async () => {
-    if (candyMachineId)
-      try {
-        const umi = createUmi(endpoint)
-          .use(mplCandyMachine())
-          .use(mplTokenMetadata());
-        const candyMachineAddress = publicKey(candyMachineId);
-        const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
-        const candyGuard = await fetchCandyGuard(
-          umi,
-          candyMachine.mintAuthority
-        );
-        // console.log("candyguards:", candyGuard.guards);
-        // console.log("solPayment: ", candyGuard.guards.solPayment);
-        // console.log("CandyMachine:", candyMachine);
-      } catch (error) {
-        console.error("Error fetching candy machine:", error);
-      }
-  };
-
   const handleCreateBlink = async () => {
     if (
       !candyMachineId ||
@@ -118,18 +76,6 @@ export default function Dashboard() {
         .use(mplTokenMetadata());
       try {
         const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
-        const candyGuard = await fetchCandyGuard(
-          umi,
-          candyMachine.mintAuthority
-        );
-
-        // // candyGuard.guards; // All guard settings.
-        // // candyGuard.guards.botTax; // Bot Tax settings.
-        // // candyGuard.guards.solPayment; // Sol Payment settings.
-
-        console.log("candyguards:", candyGuard.guards);
-        console.log("solPayment: ", candyGuard.guards.solPayment);
-        console.log("CandyMachine:", candyMachine);
       } catch (error) {
         console.error("Error fetching candy machine:", error);
         Toast.fire({
@@ -336,12 +282,6 @@ export default function Dashboard() {
             >
               Save!
             </div>{" "}
-            {/* <div
-              className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
-              onClick={fetchCandyGuards}
-            >
-              test!
-            </div> */}
           </div>
         </form>
         <div>
