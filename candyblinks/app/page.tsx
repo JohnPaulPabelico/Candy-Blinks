@@ -34,7 +34,6 @@ export default function Home() {
                 <NavBar />
                 <Hero />
                 <About />
-                {/* <Hero /> */}
                 <Footer />
               </div>
             </WalletModalProvider>

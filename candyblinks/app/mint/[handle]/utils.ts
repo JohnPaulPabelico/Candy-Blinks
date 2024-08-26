@@ -27,8 +27,6 @@ import supabase from "@/app/lib/supabaseClient";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
 
-const treasury = publicKey("9QZqqJfKRuoGKTaCgUvjQMMUNpaxhPC3fvn2y8iPZ4uU");
-
 type MintTransactionParam = {
   toAddress: string;
   handle: string;
@@ -36,7 +34,6 @@ type MintTransactionParam = {
 
 interface GuardOption {
   __option: "None" | "Some";
-  // Add other potential properties for the guard types here
 }
 
 interface Guards {
@@ -78,7 +75,6 @@ export const mintTransaction = async (
       throw new Error("No blinks found for the given handle");
     }
 
-    // Access the first item in the array
     const firstBlink = blinksData[0];
     const candyMachineAddress = publicKey(firstBlink.candymachine_id);
 
