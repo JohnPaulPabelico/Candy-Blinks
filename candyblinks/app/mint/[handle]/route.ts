@@ -61,7 +61,7 @@ export const POST = async (
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
-        message: `Hello there ${body.account}`,
+        message: `Successfully minted!`,
       },
     });
     return Response.json(payload, {
