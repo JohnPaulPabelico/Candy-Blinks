@@ -99,7 +99,7 @@ export default function Dashboard() {
           })
           .eq("id", selectedBlink.id)
           .select();
-
+        getBlink();
         setSelectedBlink(null);
       } catch (error) {
         console.error("Failed to update blink: ", error);
