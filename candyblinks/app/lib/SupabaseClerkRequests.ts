@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useSupabaseClient } from "./supabaseClerkClient";
+import { useSupabaseClerkClient } from "./supabaseClerkClient";
 
 export function useFetchBlinks(userId: string) {
-  const supabase = useSupabaseClient();
+  const supabase = useSupabaseClerkClient();
   const [blinks, setBlinks] = useState<any[]>([]);
   const [error, setError] = useState<Error | null>(null);
 
