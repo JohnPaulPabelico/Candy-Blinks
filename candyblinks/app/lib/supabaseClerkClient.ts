@@ -1,7 +1,7 @@
 import { useSession } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 
-export function useSupabaseClient() {
+export function useSupabaseClerkClient() {
   const { session } = useSession();
 
   return createClient(

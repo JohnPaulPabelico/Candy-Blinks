@@ -13,7 +13,7 @@ import {
 } from "@metaplex-foundation/mpl-candy-machine";
 import { clusterApiUrl } from "@solana/web3.js";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
-import { useSupabaseClient } from "../lib/supabaseClerkClient";
+import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
 
 const candyBlinkUrl = process.env.NEXT_PUBLIC_CANDYBLINK_URL || "";
 
@@ -27,7 +27,7 @@ export default function Dashboard() {
   const { userId } = useAuth();
   const ref = useRef<HTMLFormElement>(null);
 
-  const client = useSupabaseClient();
+  const client = useSupabaseClerkClient();
 
   const [touchedInputs, setTouchedInputs] = useState<
     Record<InputField, boolean>
