@@ -1,21 +1,20 @@
-// lib/blinkService.ts
-// import supabase from "./supabaseClient";
+import supabase from "./supabaseClient";
 
-// export const getBlinks = async (userId: string) => {
-//   try {
-//     const { data, error } = await supabase
-//       .from("blinks")
-//       .select("*")
-//       .eq("user_id", userId);
+export const getBlinks = async (userId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("blinks")
+      .select("*")
+      .eq("user_id", userId);
 
-//     if (error) throw error;
+    if (error) throw error;
 
-//     return data || [];
-//   } catch (error) {
-//     console.error("Failed to fetch blinks: ", error);
-//     throw error;
-//   }
-// };
+    return data || [];
+  } catch (error) {
+    console.error("Failed to fetch blinks: ", error);
+    throw error;
+  }
+};
 
 // export const deleteBlink = async (id: number) => {
 //   try {

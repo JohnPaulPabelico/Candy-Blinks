@@ -9,7 +9,8 @@ import SkeletonCard from "./components/SkeletonCard";
 import { FaRegCopy } from "react-icons/fa";
 import Swal from "sweetalert2";
 import EmptySkeletonCard from "./components/EmptySkeletonCard";
-import { useSupabaseClient } from "../lib/supabaseClerkClient";
+import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
+import { getBlinks } from "../lib/supabaseRequests";
 
 export default function Dashboard() {
   const { userId } = useAuth();
@@ -25,18 +26,13 @@ export default function Dashboard() {
   const { user } = useUser();
   // The `useSession()` hook will be used to get the Clerk session object
 
-  const client = useSupabaseClient();
+  const client = useSupabaseClerkClient();
 
   const getBlink = useCallback(async () => {
     try {
-      if (!user) return;
+      const data = await getBlinks(userId!);
 
-      const { data, error } = await client
-        .from("blinks")
-        .select("*")
-        .eq("user_id", userId);
-
-      if (!error) setBlinks(data);
+      setBlinks(data);
 
       if (!data || data.length === 0) {
         setLoading(false);
@@ -50,7 +46,7 @@ export default function Dashboard() {
     } catch (error) {
       console.log("error: ", error);
     }
-  }, [client, user, userId]);
+  }, [userId]);
 
   const removeBlink = async (id: number) => {
     try {
