@@ -5,7 +5,6 @@ import { SignedIn, useAuth } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
 import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
-import { createBlink } from "../lib/supabaseRequests";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { publicKey } from "@metaplex-foundation/umi";
 import {
@@ -14,6 +13,7 @@ import {
 } from "@metaplex-foundation/mpl-candy-machine";
 import { clusterApiUrl } from "@solana/web3.js";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
+import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
 
 const candyBlinkUrl = process.env.NEXT_PUBLIC_CANDYBLINK_URL || "";
 
@@ -26,6 +26,8 @@ export default function Dashboard() {
   const [success, setSuccess] = useState(false);
   const { userId } = useAuth();
   const ref = useRef<HTMLFormElement>(null);
+
+  const client = useSupabaseClerkClient();
 
   const [touchedInputs, setTouchedInputs] = useState<
     Record<InputField, boolean>
@@ -96,16 +98,19 @@ export default function Dashboard() {
     try {
       const randomText = generateRandomText(8);
       const currentTime = new Date().getTime();
-      const data = await createBlink(
-        candyMachineId || "", // Default to empty string
-        title || "",
-        label || "",
-        iconUrl || "",
-        description || "",
-        userId || "", // Default to empty string
-        randomText || "",
-        currentTime
-      );
+      const data = await client
+        .from("blinks")
+        .insert({
+          candymachine_id: candyMachineId,
+          title: title,
+          label: label,
+          image_url: iconUrl,
+          description: description,
+          created_at: currentTime,
+          user_id: userId,
+          handle: randomText,
+        })
+        .select();
 
       console.log("data: ", data);
       ref.current?.reset();
