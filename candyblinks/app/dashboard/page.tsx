@@ -1,15 +1,15 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { SignedIn, useAuth } from "@clerk/nextjs";
+import { SignedIn, useAuth, useUser } from "@clerk/nextjs";
 import NavBar from "./components/NavBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { getBlinks, updateBlink, deleteBlink } from "../lib/supabaseRequests";
 import Image from "next/image";
 import SkeletonCard from "./components/SkeletonCard";
 import { FaRegCopy } from "react-icons/fa";
 import Swal from "sweetalert2";
 import EmptySkeletonCard from "./components/EmptySkeletonCard";
+import { useSupabaseClient } from "../lib/supabaseClerkClient";
 
 export default function Dashboard() {
   const { userId } = useAuth();
@@ -22,11 +22,21 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [isBlinksFound, setIsBlinksFound] = useState(true);
 
+  const { user } = useUser();
+  // The `useSession()` hook will be used to get the Clerk session object
+
+  const client = useSupabaseClient();
+
   const getBlink = useCallback(async () => {
     try {
-      const data = await getBlinks(userId!);
+      if (!user) return;
 
-      setBlinks(data);
+      const { data, error } = await client
+        .from("blinks")
+        .select("*")
+        .eq("user_id", userId);
+
+      if (!error) setBlinks(data);
 
       if (!data || data.length === 0) {
         setLoading(false);
@@ -40,15 +50,18 @@ export default function Dashboard() {
     } catch (error) {
       console.log("error: ", error);
     }
-  }, [userId]);
+  }, [client, user, userId]);
 
   const removeBlink = async (id: number) => {
     try {
-      const deletedBlinkId = await deleteBlink(id);
+      const { error } = await client.from("blinks").delete().eq("id", id);
 
-      setBlinks((prevBlinks) =>
-        prevBlinks.filter((blink) => blink.id !== deletedBlinkId)
-      );
+      if (error) {
+        throw new Error("Failed to delete blink");
+      }
+
+      setBlinks((prevBlinks) => prevBlinks.filter((blink) => blink.id !== id));
+
       Toast.fire({
         icon: "success",
         title: "Blink deleted successfully",
@@ -79,19 +92,18 @@ export default function Dashboard() {
       try {
         console.log("selectedBlink: ", selectedBlink);
         const currentTime = new Date().getTime();
-        const updatedBlink = await updateBlink(
-          selectedBlink.id,
-          title,
-          label,
-          iconUrl,
-          description,
-          currentTime
-        );
-        setBlinks(
-          blinks.map((blink) =>
-            blink.id === selectedBlink.id ? (updatedBlink[0] as Blink) : blink
-          )
-        );
+        const updatedBlink = await client
+          .from("blinks")
+          .update({
+            title: title,
+            label: label,
+            image_url: iconUrl,
+            description: description,
+            updated_at: currentTime,
+          })
+          .eq("id", selectedBlink.id)
+          .select();
+
         setSelectedBlink(null);
       } catch (error) {
         console.error("Failed to update blink: ", error);
