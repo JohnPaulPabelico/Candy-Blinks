@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     siteName: "CandyBlinks",
     type: "website",
   },
+  other: {
+    "dscvr:canvas:version": "vNext",
+  },
 };
 
 export default function RootLayout({
