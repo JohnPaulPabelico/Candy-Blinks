@@ -13,12 +13,6 @@ import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
 import { getBlinks } from "../lib/supabaseRequests";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description:
-    "Create and manage your Candy Machine BLinks effortlessly with our intuitive platform. Simplify NFT distribution and minting with ease.",
-};
-
 export default function Dashboard() {
   const { userId } = useAuth();
   const [blinks, setBlinks] = useState<Blink[]>([]);

@@ -16,12 +16,6 @@ import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Create",
-  description:
-    "Create and manage your Candy Machine BLinks effortlessly with our intuitive platform. Simplify NFT distribution and minting with ease.",
-};
-
 const candyBlinkUrl = process.env.NEXT_PUBLIC_CANDYBLINK_URL || "";
 
 export default function Dashboard() {
