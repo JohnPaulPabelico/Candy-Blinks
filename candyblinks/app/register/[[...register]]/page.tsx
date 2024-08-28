@@ -1,4 +1,11 @@
 import { SignUp } from "@clerk/nextjs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Register",
+  description:
+    "Create and manage your Candy Machine BLinks effortlessly with our intuitive platform. Simplify NFT distribution and minting with ease.",
+};
 
 export default function Page() {
   return (

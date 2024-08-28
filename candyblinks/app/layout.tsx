@@ -17,7 +17,8 @@ export const metadata: Metadata = {
     default: "Candy Blinks | Candy Machine BLink Generator",
     template: "%s | Candy Blinks",
   },
-  description: "Easily generate Candy Machine BLinks",
+  description:
+    "Create and manage your Candy Machine BLinks effortlessly with our intuitive platform. Simplify NFT distribution and minting with ease.",
   openGraph: {
     title: "Candy Blinks - Candy Machine BLink Generator",
     description: "Easily generate Candy Machine BLinks",
