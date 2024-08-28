@@ -1,57 +1,13 @@
-import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { SignedIn, useAuth } from "@clerk/nextjs";
-import { IoIosClose } from "react-icons/io";
-import Swal from "sweetalert2";
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { publicKey } from "@metaplex-foundation/umi";
-import {
-  fetchCandyMachine,
-  mplCandyMachine,
-} from "@metaplex-foundation/mpl-candy-machine";
-import { clusterApiUrl } from "@solana/web3.js";
-import { useSupabaseClerkClient } from "../../lib/supabaseClerkClient";
+import { SignedIn } from "@clerk/nextjs";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Candy Blinks",
-  description: "A Candy Machine BLink Generator",
-  openGraph: {
-    title: "CandyBlinks",
-    description: "A Candy Machine BLink Generator",
-    url: "https://candyblinks.fun/",
-    siteName: "CandyBlinks",
-    type: "website",
-    // images: [
-    //   {
-    //     url: "https://raw.githubusercontent.com/gitdagray/my-blogposts/main/images/og-card.png",
-    //     secureUrl:
-    //       "https://raw.githubusercontent.com/gitdagray/my-blogposts/main/images/og-card.png",
-    //     width: 1200,
-    //     height: 630,
-    //     alt: "Preview image for Dave Gray",
-    //   },
-    // ],
-  },
+  title: "Mint",
+  description: "Easily generate Candy Machine BLinks",
 };
 
 export default function Dashboard() {
-  const endpoint = clusterApiUrl("devnet");
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    background: "#ffffff",
-    color: "#000000",
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-
   return (
     <SignedIn>
       <div className="min-h-dvh flex gap-5 justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">

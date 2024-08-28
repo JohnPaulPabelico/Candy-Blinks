@@ -4,16 +4,6 @@ import "./globals.css";
 import localfont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const wonderbar = localfont({
-  src: [
-    {
-      path: "../public/fonts/Wonderbar Demo.otf",
-      weight: "400",
-    },
-  ],
-  variable: "--font-wonderbar",
-});
-
 const inter = Inter({ subsets: ["latin"] });
 const DM_Sans_init = DM_Sans({
   subsets: ["latin"],
@@ -22,8 +12,19 @@ const DM_Sans_init = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Candy Blinks",
-  description: "A Candy Machine BLink Generator",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_CANDYBLINK_URL || ""),
+  title: {
+    default: "Candy Blinks | Candy Machine BLink Generator",
+    template: "%s | Candy Blinks",
+  },
+  description: "Easily generate Candy Machine BLinks",
+  openGraph: {
+    title: "Candy Blinks - Candy Machine BLink Generator",
+    description: "Easily generate Candy Machine BLinks",
+    url: process.env.NEXT_PUBLIC_CANDYBLINK_URL || "",
+    siteName: "CandyBlinks",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -33,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={wonderbar.variable}>
+      <html lang="en">
         <body
           className={`${inter.className} ${DM_Sans_init.className}`}
           suppressHydrationWarning={true}
