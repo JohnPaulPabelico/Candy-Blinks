@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   },
   other: {
     "dscvr:canvas:version": "vNext",
+    "og:image": "https://candyblinks.fun/opengraph-image.png",
   },
 };
 
