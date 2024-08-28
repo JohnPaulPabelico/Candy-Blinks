@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 import EmptySkeletonCard from "./components/EmptySkeletonCard";
 import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
 import { getBlinks } from "../lib/supabaseRequests";
-import { Metadata } from "next";
 
 export default function Dashboard() {
   const { userId } = useAuth();

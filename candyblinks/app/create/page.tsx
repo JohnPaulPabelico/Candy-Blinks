@@ -14,7 +14,6 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
-import { Metadata } from "next";
 
 const candyBlinkUrl = process.env.NEXT_PUBLIC_CANDYBLINK_URL || "";
 
