@@ -64,7 +64,7 @@ export const POST = async (
   const body: ActionPostRequest = await req.json();
   const userPubKey = body.account;
 
-  // client.trackActionV2(userPubKey, req.url);
+  client.trackActionV2(userPubKey, req.url);
   // const blinksightsActionIdentityInstruction =
   //   client.getActionIdentityInstructionV2(userPubKey, req.url);
 
