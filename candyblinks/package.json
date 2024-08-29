@@ -23,6 +23,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "^1.95.1",
     "@supabase/supabase-js": "^2.45.1",
+    "blinksights-sdk": "^1.0.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "daisyui": "^4.12.10",

@@ -50,6 +50,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.45.1
         version: 2.45.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      blinksights-sdk:
+        specifier: ^1.0.9
+        version: 1.0.9(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -838,6 +841,10 @@ packages:
     resolution: {integrity: sha512-5F7SDGs1T72ZczbRwbGO9lQi0NLjQxzl6i4lJxLxfW9U5UluCSyEJeniWvnhl3/euNiqQVbo8zruhsDfid0esA==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/runtime@7.25.6':
+    resolution: {integrity: sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/template@7.24.7':
     resolution: {integrity: sha512-jYqfPrU9JTF0PmPy1tLYHW4Mp4KlgxJD9l2nP9fD6yT/ICi554DmrWBAEYpIelzjHf1msDP3PxJIRt/nFNfBig==}
     engines: {node: '>=6.9.0'}
@@ -1328,8 +1335,15 @@ packages:
   '@solana/actions-spec@2.0.0':
     resolution: {integrity: sha512-VspGvbPE0Cl+DEE5XOg3ebRVW0/MKxZzrkdgqlHY566LuLkvUWX+ioPv33HcriIiGFXXLtamHajt/UoqE/bKHQ==}
 
+  '@solana/actions-spec@2.2.2':
+    resolution: {integrity: sha512-+iu1B8nbEHnzkhuBST8Kzes3yPucuLgTVKdd80Cot8wo6IJ+pH3hzSPGeJIoqykpnGMwJxMihmQlFIy+IyC2+w==}
+
   '@solana/actions@1.4.0':
     resolution: {integrity: sha512-X6SrWJZG3GR35ynz+EJF7L0sRWSG3UwDZSV3hQTw30c8T+zfU8NWIB22JNfZ+UfsVCAZ9RbebNj82upVafTksA==}
+    engines: {node: '>=16'}
+
+  '@solana/actions@1.6.4':
+    resolution: {integrity: sha512-/3slukZ4TR4OScbyfaRzfT9cms7jmcSblvqkQK9AtJRMiktTL6ozhP91TAFUKZU85gtxnMWr30jSTW946JA+Qg==}
     engines: {node: '>=16'}
 
   '@solana/buffer-layout@4.0.1':
@@ -1407,6 +1421,9 @@ packages:
 
   '@solana/web3.js@1.95.1':
     resolution: {integrity: sha512-mRX/AjV6QbiOXpWcy5Rz1ZWEH2lVkwO7T0pcv9t97ACpv3/i3tPiqXwk0JIZgSR3wOSTiT26JfygnJH2ulS6dQ==}
+
+  '@solana/web3.js@1.95.3':
+    resolution: {integrity: sha512-O6rPUN0w2fkNqx/Z3QJMB9L225Ex10PRDH8bTaIUPZXMPV0QP8ZpPvjQnXK+upUczlRgzHzd6SjKIha1p+I6og==}
 
   '@supabase/auth-js@2.64.4':
     resolution: {integrity: sha512-9ITagy4WP4FLl+mke1rchapOH0RQpf++DI+WSG2sO1OFOZ0rW3cwAM0nCrMOxu+Zw4vJ4zObc08uvQrXx590Tg==}
@@ -1691,6 +1708,9 @@ packages:
   async-limiter@1.0.1:
     resolution: {integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==}
 
+  asynckit@0.4.0:
+    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
@@ -1698,6 +1718,9 @@ packages:
   axe-core@4.9.1:
     resolution: {integrity: sha512-QbUdXJVTpvUTHU7871ppZkdOLBeGUKBQWHkHrvN2V9IQWGMt61zf3B45BtzjxEJzYuj0JBjBZP/hmYS/R9pmAw==}
     engines: {node: '>=4'}
+
+  axios@1.7.5:
+    resolution: {integrity: sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==}
 
   axobject-query@3.1.1:
     resolution: {integrity: sha512-goKlv8DZrK9hUh975fnHzhNIO4jUnFCfv/dszV5VwUGDFjI6vQ2VwoyjYjYNEbBE8AH87TduWP5uyDR1D+Iteg==}
@@ -1753,6 +1776,9 @@ packages:
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
+
+  blinksights-sdk@1.0.9:
+    resolution: {integrity: sha512-xyjnbDTigmo/Kfl4q5027W0r8nosMpjXWZs13ILHXF3OZu27aABbEYUg26uto5zZ9hYJbh0brQo2yiS35fOT6Q==}
 
   bn.js@4.11.6:
     resolution: {integrity: sha512-XWwnNNFCuuSQ0m3r3C4LE3EiORltHd9M05pq6FOlVeiophzRbMo50Sbz1ehl8K3Z+jw9+vmgnXefY1hz8X+2wA==}
@@ -1923,6 +1949,10 @@ packages:
   colorette@1.4.0:
     resolution: {integrity: sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==}
 
+  combined-stream@1.0.8:
+    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
+    engines: {node: '>= 0.8'}
+
   command-exists@1.2.9:
     resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==}
 
@@ -1981,6 +2011,10 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+
+  crypto@1.0.1:
+    resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
+    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
 
   css-selector-tokenizer@0.8.0:
     resolution: {integrity: sha512-Jd6Ig3/pe62/qe5SBPTN8h8LeUg/pT4lLgtavPf7updwwHpvFzxvOQBHYj2LZDMjUnBzgvIUSjRcf6oT5HzHFg==}
@@ -2076,6 +2110,10 @@ packages:
   delay@5.0.0:
     resolution: {integrity: sha512-ReEBKkIfe4ya47wlPYf/gu5ib6yUG0/Aez0JQZQz94kiWtRQvZIQbTiehsnwHvLSWJnQdhVeqYue7Id1dKr0qw==}
     engines: {node: '>=10'}
+
+  delayed-stream@1.0.0:
+    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
+    engines: {node: '>=0.4.0'}
 
   denodeify@1.2.1:
     resolution: {integrity: sha512-KNTihKNmQENUZeKu5fzfpzRqR5S2VMp4gl9RFHiWzj9DfvYQPMJ6XHKNaQxaGCXwPk6y9yme3aUoaiAe+KX+vg==}
@@ -2422,12 +2460,25 @@ packages:
     resolution: {integrity: sha512-82yKXpz7iWknWFsognZUf5a6mBQLnVrYoYSU9Nbu7FTOpKlu3v9ehpiI9mYXuaIO3J0ojX1b83M/InXvld9HUw==}
     engines: {node: '>=0.4.0'}
 
+  follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
 
   foreground-child@3.2.1:
     resolution: {integrity: sha512-PXUUyLqrR2XCWICfv6ukppP96sdFwWbNEnfEMt7jNsISjMsvaLNinAHNDYyvkyU+SZG2BTSbT5NjG+vZslfGTA==}
     engines: {node: '>=14'}
+
+  form-data@4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
 
   framer-motion@11.3.21:
     resolution: {integrity: sha512-D+hfIsvzV8eL/iycld4K+tKlg2Q2LdwnrcBEohtGw3cG1AIuNYATbT5RUqIM1ndsAk+EfGhoSGf0UaiFodc5Tw==}
@@ -3525,6 +3576,9 @@ packages:
 
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
+
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -5237,6 +5291,10 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
+  '@babel/runtime@7.25.6':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/template@7.24.7':
     dependencies:
       '@babel/code-frame': 7.24.7
@@ -5997,11 +6055,27 @@ snapshots:
 
   '@solana/actions-spec@2.0.0': {}
 
+  '@solana/actions-spec@2.2.2': {}
+
   '@solana/actions@1.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
       '@solana/actions-spec': 2.0.0
       '@solana/qr-code-styling': 1.6.0
       '@solana/web3.js': 1.95.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      bs58: 5.0.0
+      cross-fetch: 3.1.8
+      js-base64: 3.7.7
+      tweetnacl: 1.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - utf-8-validate
+
+  '@solana/actions@1.6.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@solana/actions-spec': 2.2.2
+      '@solana/qr-code-styling': 1.6.0
+      '@solana/web3.js': 1.95.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       bs58: 5.0.0
       cross-fetch: 3.1.8
       js-base64: 3.7.7
@@ -6127,6 +6201,28 @@ snapshots:
   '@solana/web3.js@1.95.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/runtime': 7.24.8
+      '@noble/curves': 1.4.2
+      '@noble/hashes': 1.4.0
+      '@solana/buffer-layout': 4.0.1
+      agentkeepalive: 4.5.0
+      bigint-buffer: 1.1.5
+      bn.js: 5.2.1
+      borsh: 0.7.0
+      bs58: 4.0.1
+      buffer: 6.0.3
+      fast-stable-stringify: 1.0.0
+      jayson: 4.1.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      node-fetch: 2.7.0
+      rpc-websockets: 9.0.2
+      superstruct: 2.0.2
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - utf-8-validate
+
+  '@solana/web3.js@1.95.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@babel/runtime': 7.25.6
       '@noble/curves': 1.4.2
       '@noble/hashes': 1.4.0
       '@solana/buffer-layout': 4.0.1
@@ -6484,11 +6580,21 @@ snapshots:
 
   async-limiter@1.0.1: {}
 
+  asynckit@0.4.0: {}
+
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
 
   axe-core@4.9.1: {}
+
+  axios@1.7.5:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
 
   axobject-query@3.1.1:
     dependencies:
@@ -6555,6 +6661,18 @@ snapshots:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
+
+  blinksights-sdk@1.0.9(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+    dependencies:
+      '@solana/actions': 1.6.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@solana/web3.js': 1.95.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      axios: 1.7.5
+      crypto: 1.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - encoding
+      - utf-8-validate
 
   bn.js@4.11.6: {}
 
@@ -6737,6 +6855,10 @@ snapshots:
 
   colorette@1.4.0: {}
 
+  combined-stream@1.0.8:
+    dependencies:
+      delayed-stream: 1.0.0
+
   command-exists@1.2.9: {}
 
   commander@2.20.3: {}
@@ -6804,6 +6926,8 @@ snapshots:
       which: 2.0.2
 
   crypto-js@4.2.0: {}
+
+  crypto@1.0.1: {}
 
   css-selector-tokenizer@0.8.0:
     dependencies:
@@ -6905,6 +7029,8 @@ snapshots:
       object-keys: 1.1.1
 
   delay@5.0.0: {}
+
+  delayed-stream@1.0.0: {}
 
   denodeify@1.2.1: {}
 
@@ -7406,6 +7532,8 @@ snapshots:
 
   flow-parser@0.241.0: {}
 
+  follow-redirects@1.15.6: {}
+
   for-each@0.3.3:
     dependencies:
       is-callable: 1.2.7
@@ -7414,6 +7542,12 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
+
+  form-data@4.0.0:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
 
   framer-motion@11.3.21(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -8597,6 +8731,8 @@ snapshots:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
+
+  proxy-from-env@1.1.0: {}
 
   punycode@2.3.1: {}
 

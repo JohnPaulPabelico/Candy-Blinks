@@ -6,6 +6,7 @@ import {
   createPostResponse,
 } from "@solana/actions";
 import { mintTransaction, getBlink } from "./utils";
+import client from "@/app/lib/blinksightsClient";
 
 export const GET = async (
   req: Request,
@@ -26,12 +27,15 @@ export const GET = async (
     // Access the first item in the array
     const firstBlink = blinksData[0];
 
-    const payload: ActionGetResponse = {
-      title: firstBlink.title,
-      icon: firstBlink.image_url,
-      description: firstBlink.description,
-      label: firstBlink.label,
-    };
+    const payload: ActionGetResponse = client.createActionGetResponseV1(
+      req.url,
+      {
+        title: firstBlink.title,
+        icon: firstBlink.image_url,
+        description: firstBlink.description,
+        label: firstBlink.label,
+      }
+    );
 
     return Response.json(payload, {
       headers: ACTIONS_CORS_HEADERS,
@@ -50,8 +54,12 @@ export const POST = async (
 ) => {
   const handle = params.handle;
   const body: ActionPostRequest = await req.json();
-  const userPubKey = body.account;
 
+  const userPubKey = body.account;
+  client.trackActionV2(userPubKey, req.url);
+  const blinksightsActionIdentityInstruction =
+    client.getActionIdentityInstructionV2(userPubKey, req.url);
+    
   try {
     const transaction = await mintTransaction({
       toAddress: userPubKey,
