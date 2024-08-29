@@ -34,6 +34,14 @@ export const GET = async (
         icon: firstBlink.image_url,
         description: firstBlink.description,
         label: firstBlink.label,
+        links: {
+          actions: [
+            {
+              label: firstBlink.label, // button text
+              href: "/blinks/mint/" + handle, // button link
+            },
+          ],
+        },
       }
     );
 
@@ -54,12 +62,12 @@ export const POST = async (
 ) => {
   const handle = params.handle;
   const body: ActionPostRequest = await req.json();
-
   const userPubKey = body.account;
+
   client.trackActionV2(userPubKey, req.url);
   const blinksightsActionIdentityInstruction =
     client.getActionIdentityInstructionV2(userPubKey, req.url);
-    
+
   try {
     const transaction = await mintTransaction({
       toAddress: userPubKey,
