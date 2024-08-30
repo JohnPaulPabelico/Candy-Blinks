@@ -10,6 +10,7 @@ import { publicKey } from "@metaplex-foundation/umi";
 import {
   fetchCandyMachine,
   mplCandyMachine,
+  fetchCandyGuard,
 } from "@metaplex-foundation/mpl-candy-machine";
 import { clusterApiUrl } from "@solana/web3.js";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
@@ -122,6 +123,31 @@ export default function Dashboard() {
       setDescription("");
     } catch (error) {
       console.error("Error creating blink: ", error);
+    }
+  };
+
+  const fetchCandyGuards = async () => {
+    try {
+      console.log("fetching candy guards...");
+      const candyMachineAddress = publicKey(candyMachineId);
+      const umi = createUmi(endpoint)
+        .use(mplCandyMachine())
+        .use(mplTokenMetadata());
+      const candyMachine = await fetchCandyMachine(umi, candyMachineAddress);
+      const candyGuard = await fetchCandyGuard(umi, candyMachine.mintAuthority);
+      console.log("guards: ", candyGuard.guards);
+
+      const mintArgs: { [key: string]: GuardOption } = {};
+
+      for (const [key, value] of Object.entries(candyGuard.guards)) {
+        if (value && value.__option !== "None") {
+          mintArgs[key] = value;
+        }
+      }
+
+      console.log("mintArgs: ", mintArgs);
+    } catch (error) {
+      console.error("Error fetching candy guards: ", error);
     }
   };
 
@@ -287,6 +313,12 @@ export default function Dashboard() {
             >
               Save!
             </div>{" "}
+            {/* <div
+              className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+              onClick={fetchCandyGuards}
+            >
+              Get Guards!
+            </div> */}
           </div>
         </form>
         <div>
