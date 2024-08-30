@@ -51,8 +51,8 @@ importers:
         specifier: ^2.45.1
         version: 2.45.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       blinksights-sdk:
-        specifier: ^1.0.9
-        version: 1.0.9(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        specifier: ^1.0.10
+        version: 1.0.10(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1777,8 +1777,8 @@ packages:
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
 
-  blinksights-sdk@1.0.9:
-    resolution: {integrity: sha512-xyjnbDTigmo/Kfl4q5027W0r8nosMpjXWZs13ILHXF3OZu27aABbEYUg26uto5zZ9hYJbh0brQo2yiS35fOT6Q==}
+  blinksights-sdk@1.0.10:
+    resolution: {integrity: sha512-i42MeYtGqLs2uMkRnxvS1L9PMhO/RdfYW8K+67hkUsRdBUnEEIvVwjPTFsXdYIP39V/pDyFgqTmj6Z983m1Hog==}
 
   bn.js@4.11.6:
     resolution: {integrity: sha512-XWwnNNFCuuSQ0m3r3C4LE3EiORltHd9M05pq6FOlVeiophzRbMo50Sbz1ehl8K3Z+jw9+vmgnXefY1hz8X+2wA==}
@@ -6662,7 +6662,7 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
-  blinksights-sdk@1.0.9(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  blinksights-sdk@1.0.10(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     dependencies:
       '@solana/actions': 1.6.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@solana/web3.js': 1.95.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -8254,7 +8254,7 @@ snapshots:
 
   metro-runtime@0.80.9:
     dependencies:
-      '@babel/runtime': 7.24.8
+      '@babel/runtime': 7.25.6
 
   metro-source-map@0.80.9:
     dependencies:
@@ -8893,7 +8893,7 @@ snapshots:
 
   regenerator-transform@0.15.2:
     dependencies:
-      '@babel/runtime': 7.24.8
+      '@babel/runtime': 7.25.6
 
   regexp.prototype.flags@1.5.2:
     dependencies:
