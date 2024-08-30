@@ -34,7 +34,7 @@ const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
 type MintTransactionParam = {
   toAddress: string;
   handle: string;
-  blinksightsIx: TransactionInstruction;
+  blinksightsIx: TransactionInstruction | undefined;
 };
 
 interface GuardOption {
