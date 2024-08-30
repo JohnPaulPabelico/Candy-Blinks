@@ -11,6 +11,8 @@ import Swal from "sweetalert2";
 import EmptySkeletonCard from "./components/EmptySkeletonCard";
 import { useSupabaseClerkClient } from "../lib/supabaseClerkClient";
 import { getBlinks } from "../lib/supabaseRequests";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Dashboard() {
   const { userId } = useAuth();
@@ -198,7 +200,7 @@ export default function Dashboard() {
                     </span>
                     <span
                       className="text-neutral-400 text-lg cursor-pointer hover:text-white transition duration-200 tooltip"
-                      data-tip={"https://candyblinks.fun/mint/" + blink.handle}
+                      data-tip="Copy URL to Clipboard"
                       onClick={() => {
                         copyToClipboard(
                           "https://candyblinks.fun/mint/" + blink.handle
@@ -207,6 +209,15 @@ export default function Dashboard() {
                     >
                       <FaRegCopy />
                     </span>
+                    <Link
+                      href={"https://candyblinks.fun/mint/" + blink.handle}
+                      className="ml-2 text-neutral-400 text-lg cursor-pointer hover:text-white transition duration-200 tooltip"
+                      data-tip={"Redirect to: https://candyblinks.fun/mint/" + blink.handle}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaExternalLinkAlt />
+                    </Link>
                   </div>
                 </div>
               </div>
