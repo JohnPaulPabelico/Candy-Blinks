@@ -69,13 +69,14 @@ export const POST = async (
   console.log("body: ", body);
 
   client.trackActionV2(userPubKey, req.url);
-  // const blinksightsActionIdentityInstruction =
-  //   client.getActionIdentityInstructionV2(userPubKey, req.url);
+  const blinksightsActionIdentityInstruction =
+    client.getActionIdentityInstructionV2(userPubKey, req.url);
 
   try {
     const transaction = await mintTransaction({
       toAddress: userPubKey,
       handle,
+      blinksightsIx: blinksightsActionIdentityInstruction,
     });
 
     const payload: ActionPostResponse = await createPostResponse({
