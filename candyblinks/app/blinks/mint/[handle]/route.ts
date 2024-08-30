@@ -24,26 +24,28 @@ export const GET = async (
       throw new Error("No blinks found for the given handle");
     }
 
-    // Access the first item in the array
     const firstBlink = blinksData[0];
 
-    const payload: ActionGetResponse = client.createActionGetResponseV1(
-      req.url,
-      {
-        title: firstBlink.title,
-        icon: firstBlink.image_url,
-        description: firstBlink.description,
-        label: firstBlink.label,
-        links: {
-          actions: [
-            {
-              label: firstBlink.label, // button text
-              href: "/blinks/mint/" + handle, // button link
-            },
-          ],
-        },
-      }
-    );
+    const response = client.createActionGetResponseV1(req.url, {
+      title: firstBlink.title,
+      icon: firstBlink.image_url,
+      description: firstBlink.description,
+      label: firstBlink.label,
+      links: {
+        actions: [
+          {
+            label: firstBlink.label,
+            href: "/blinks/mint/" + handle, 
+          },
+        ],
+      },
+    });
+
+    if (!response) {
+      throw new Error("Failed to create ActionGetResponse");
+    }
+
+    const payload: ActionGetResponse = response;
 
     return Response.json(payload, {
       headers: ACTIONS_CORS_HEADERS,
