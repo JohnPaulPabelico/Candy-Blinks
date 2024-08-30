@@ -21,8 +21,12 @@ import {
   Connection,
   PublicKey,
   Transaction,
+  TransactionInstruction,
 } from "@solana/web3.js";
-import { toWeb3JsLegacyTransaction } from "@metaplex-foundation/umi-web3js-adapters";
+import {
+  fromWeb3JsInstruction,
+  toWeb3JsLegacyTransaction,
+} from "@metaplex-foundation/umi-web3js-adapters";
 import supabase from "@/app/lib/supabaseClient";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
@@ -30,6 +34,7 @@ const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
 type MintTransactionParam = {
   toAddress: string;
   handle: string;
+  blinksightsIx: TransactionInstruction;
 };
 
 interface GuardOption {
@@ -59,7 +64,7 @@ export const getBlink = async (handle: string) => {
 export const mintTransaction = async (
   params: MintTransactionParam
 ): Promise<Transaction> => {
-  const { toAddress, handle } = params;
+  const { toAddress, handle, blinksightsIx } = params;
 
   const toPubKey = publicKey(toAddress);
   const pubKeySigner = createNoopSigner(toPubKey);
@@ -104,6 +109,7 @@ export const mintTransaction = async (
             mintArgs: getMintArgs(candyGuard?.guards),
           })
         )
+
         .setBlockhash(latestBlockhashResult.blockhash)
         .build(umi);
 
@@ -140,9 +146,19 @@ function getMintArgs(guards: Guards | undefined) {
 
   if (!guards) return mintArgs;
 
-  // Iterate through each guard and add it to mintArgs if it has a value
+  // List of guards to exclude
+  const excludedGuards = [
+    "botTax",
+    "addressGate",
+    "endDate",
+    "programGate",
+    "redeemedAmount",
+    "startDate",
+  ];
+
+  // Iterate through each guard and add it to mintArgs if it's not in the excluded list and has a value
   for (const [key, value] of Object.entries(guards)) {
-    if (value && value.__option !== "None") {
+    if (value && value.__option !== "None" && !excludedGuards.includes(key)) {
       mintArgs[key] = value;
     }
   }
