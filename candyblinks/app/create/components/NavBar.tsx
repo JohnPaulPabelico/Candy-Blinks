@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { RxDashboard } from "react-icons/rx";
 import { RiEyeFill } from "react-icons/ri";
 import { IoMdSettings } from "react-icons/io";
