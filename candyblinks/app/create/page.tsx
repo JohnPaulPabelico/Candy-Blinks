@@ -229,7 +229,10 @@ export default function Dashboard() {
           <label className="form-control">
             <div className="label">
               <span className="label-text dm-sans text-white">
-                Candy Machine ID
+                Candy Machine ID{" "}
+                <span className="text-neutral-400 italic">
+                  (Only Token Metadata is supported for now)
+                </span>
               </span>
             </div>
             <input
