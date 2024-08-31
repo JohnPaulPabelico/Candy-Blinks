@@ -35,7 +35,7 @@ export const GET = async (
         actions: [
           {
             label: firstBlink.label,
-            href: "/blinks/mint/" + handle, 
+            href: "/blinks/mint/" + handle,
           },
         ],
       },
@@ -69,8 +69,13 @@ export const POST = async (
   console.log("body: ", body);
 
   client.trackActionV2(userPubKey, req.url);
+
   const blinksightsActionIdentityInstruction =
-    client.getActionIdentityInstructionV2(userPubKey, req.url);
+    await client.getActionIdentityInstructionV2(userPubKey, req.url);
+
+  if (!blinksightsActionIdentityInstruction) {
+    throw new Error("Failed to get the action identity instruction");
+  }
 
   try {
     const transaction = await mintTransaction({

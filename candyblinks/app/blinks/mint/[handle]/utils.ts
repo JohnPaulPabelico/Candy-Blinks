@@ -34,7 +34,7 @@ const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
 type MintTransactionParam = {
   toAddress: string;
   handle: string;
-  blinksightsIx: TransactionInstruction | undefined;
+  blinksightsIx: TransactionInstruction;
 };
 
 interface GuardOption {
@@ -97,6 +97,8 @@ export const mintTransaction = async (
     try {
       const nftMint = generateSigner(umi);
 
+      const umiBlinksightsIx = fromWeb3JsInstruction(blinksightsIx);
+
       const tx = await transactionBuilder()
         .add(setComputeUnitLimit(umi, { units: 800_000 }))
         .add(
@@ -109,9 +111,15 @@ export const mintTransaction = async (
             mintArgs: getMintArgs(candyGuard?.guards),
           })
         )
+        .add({
+          bytesCreatedOnChain: 0,
+          instruction: umiBlinksightsIx,
+          signers: [],
+        })
 
         .setBlockhash(latestBlockhashResult.blockhash)
         .build(umi);
+      console.log("test");
 
       // console.log("Blockhash:", latestBlockhashResult.blockhash);
 
