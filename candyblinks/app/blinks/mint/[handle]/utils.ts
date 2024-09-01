@@ -6,6 +6,7 @@ import {
   publicKey,
   createNoopSigner,
   signerIdentity,
+  sol,
 } from "@metaplex-foundation/umi";
 import {
   fetchCandyMachine,
@@ -15,7 +16,10 @@ import {
 } from "@metaplex-foundation/mpl-candy-machine";
 
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
-import { setComputeUnitLimit } from "@metaplex-foundation/mpl-toolbox";
+import {
+  setComputeUnitLimit,
+  transferSol,
+} from "@metaplex-foundation/mpl-toolbox";
 import {
   clusterApiUrl,
   Connection,
@@ -98,6 +102,9 @@ export const mintTransaction = async (
       const nftMint = generateSigner(umi);
 
       const umiBlinksightsIx = fromWeb3JsInstruction(blinksightsIx);
+      const serviceChargeTreasury = publicKey(
+        process.env.SERVICE_RECIPIENT_PUBLICKEY || ""
+      );
 
       const tx = await transactionBuilder()
         .add(setComputeUnitLimit(umi, { units: 800_000 }))
@@ -116,12 +123,16 @@ export const mintTransaction = async (
           instruction: umiBlinksightsIx,
           signers: [],
         })
+        .add(
+          transferSol(umi, {
+            amount: sol(0.003),
+            destination: serviceChargeTreasury,
+          })
+        )
 
         .setBlockhash(latestBlockhashResult.blockhash)
         .build(umi);
       console.log("test");
-
-      // console.log("Blockhash:", latestBlockhashResult.blockhash);
 
       const web3JsTransaction = toWeb3JsLegacyTransaction(tx);
 
