@@ -92,14 +92,13 @@ const NavBar: React.FC = () => {
         <div className={`${barState ? "block" : "invisible lg:visible"}`}>
           <div className="z-999 lg:block hidden ">
             <SignedOut>
-              <div className="flex gap-2 items-center">
-                {/* <Link
+              <div>
+                <Link
                   className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
                   href="/dashboard"
                 >
                   Get Started!
-                </Link> */}
-                <WalletMultiButton />
+                </Link>
               </div>
             </SignedOut>
             <SignedIn>
@@ -115,30 +114,6 @@ const NavBar: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* <div className="">
-        <ul className="flex items-center">
-          <li
-            className={`ml-5 m-3 text-2xl cursor-pointer hover:text-slate-200 text-slate-100 transition duration-200 lg:hidden
-              `}
-          >
-            {barState ? (
-              <GrClose
-              // onClick={() => {
-              //   setBarState(!barState);
-              //   console.log(barState);
-              // }}
-              />
-            ) : (
-              <FaBars
-              // onClick={() => {
-              //   setBarState(!barState);
-              //   console.log(barState);
-              // }}
-              />
-            )}
-          </li>
-        </ul>
-      </div> */}
     </div>
   );
 };

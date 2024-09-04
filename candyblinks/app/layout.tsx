@@ -3,6 +3,7 @@ import { DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import localfont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
+import Providers from "@/components/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 const DM_Sans_init = DM_Sans({
@@ -44,7 +45,7 @@ export default function RootLayout({
           className={`${inter.className} ${DM_Sans_init.className}`}
           suppressHydrationWarning={true}
         >
-          {children}
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>
