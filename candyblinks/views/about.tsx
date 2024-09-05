@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import React from "react";
+import Reveal from "@/components/animations/reveal";
 import { FaCode } from "react-icons/fa6";
 import { TbBoxMultiple } from "react-icons/tb";
 import { GrDeploy } from "react-icons/gr";
-import { Reveal } from "./Animations/Reveal";
 
-function About() {
+export default function About() {
   return (
     <section
       id="about"
@@ -110,5 +111,3 @@ function About() {
     </section>
   );
 }
-
-export default About;

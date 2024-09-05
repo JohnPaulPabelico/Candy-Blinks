@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { FaBars } from "react-icons/fa";
-import { GrClose } from "react-icons/gr";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
-const NavBar: React.FC = () => {
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+
+import React from "react";
+
+export default function Navbar() {
+
   const [barState, setBarState] = useState(false);
   const [isTop, setIsTop] = useState(true);
 
@@ -116,6 +118,6 @@ const NavBar: React.FC = () => {
       </div>
     </div>
   );
-};
 
-export default NavBar;
+}
+

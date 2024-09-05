@@ -1,8 +1,7 @@
-"use client";
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import { Reveal } from "./Animations/Reveal";
+import Reveal from "@/components/animations/reveal";
 
 export default function Hero() {
   return (
@@ -30,27 +29,23 @@ export default function Hero() {
           </div>
           <div className="mt-5 text-white flex items-center dm-sans justify-center lg:justify-start">
             <span>Powered by &nbsp;</span>
-            <div>
-              <Image
-                src={"/SolanaLogo.png"}
-                alt={"Solana Logo"}
-                width={100}
-                height={100}
-              />
-            </div>
+            <Image
+              src={"/SolanaLogo.png"}
+              alt={"Solana Logo"}
+              width={100}
+              height={100}
+            />
           </div>
         </div>
       </Reveal>
       <Reveal>
-        <div>
-          <Image
-            src="/logo.png"
-            alt="logo"
-            width={500}
-            height={500}
-            className="ml-20 lg:block hidden"
-          />
-        </div>
+        <Image
+          src="/logo.png"
+          alt="logo"
+          width={500}
+          height={500}
+          className="ml-20 lg:block hidden"
+        />
       </Reveal>
     </section>
   );
