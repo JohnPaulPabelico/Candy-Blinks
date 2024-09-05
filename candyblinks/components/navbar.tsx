@@ -1,12 +1,14 @@
+"use client";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { FaBars } from "react-icons/fa";
-import { GrClose } from "react-icons/gr";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
-const NavBar: React.FC = () => {
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+
+import React from "react";
+import { FaBars } from "react-icons/fa6";
+import { GrClose } from "react-icons/gr";
+
+export default function Navbar() {
   const [barState, setBarState] = useState(false);
   const [isTop, setIsTop] = useState(true);
 
@@ -19,8 +21,7 @@ const NavBar: React.FC = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  });
-
+  }, []);
   return (
     <div
       className={`flex items-center fixed top-0 w-full px-5 min-h-30 justify-between z-10 transition py-5 ${
@@ -93,13 +94,12 @@ const NavBar: React.FC = () => {
           <div className="z-999 lg:block hidden ">
             <SignedOut>
               <div className="flex gap-2 items-center">
-                {/* <Link
+                <Link
                   className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
                   href="/dashboard"
                 >
                   Get Started!
-                </Link> */}
-                <WalletMultiButton />
+                </Link>
               </div>
             </SignedOut>
             <SignedIn>
@@ -141,6 +141,4 @@ const NavBar: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default NavBar;
+}
