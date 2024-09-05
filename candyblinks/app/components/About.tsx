@@ -14,15 +14,15 @@ function About() {
       <div>
         <div className="mt-20 text-5xl font-bold dm-sans text-white leading-snug flex justify-center">
           <Reveal>
-            <div>
-              What is&nbsp;
-              <span className="text-red-400">Candy Blinks</span>
+            <div className="flex flex-col lg:flex-row text-center lg:text-start">
+              <div>What is&nbsp;</div>
+              <div className="text-red-400">Candy Blinks</div>
             </div>
           </Reveal>
         </div>
-        <div className="mt-10 flex items-center justify-center gap-10">
+        <div className="mt-10 flex flex-col lg:flex-row items-center justify-center gap-10">
           <Reveal>
-            <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2">
+            <div className="p-5 bg-neutral-800 rounded-lg shadow-lg shadow-pink-900/50 max-w-[440px] border-pink-900 border-2 mx-4">
               <Image
                 src={"/CandyBlinks.png"}
                 alt="logo"
