@@ -16,7 +16,14 @@ function Hero() {
     >
       <section className="flex items-center justify-center min-h-dvh bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10% via-neutral-950 via-70%  to-neutral-950 ">
         <Reveal>
-          <div>
+          <div className="text-center lg:text-start flex flex-col items-center lg:items-start">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={500}
+              height={500}
+              className="block lg:hidden"
+            />
             <div className="text-5xl font-bold dm-sans text-white max-w-96 leading-snug">
               Deploy your NFT Campaigns with{" "}
               <span className="text-red-400">Candy Blinks</span>
@@ -29,7 +36,7 @@ function Hero() {
                 Get Started!
               </Link>
             </div>
-            <div className="mt-5 text-white flex items-center dm-sans ">
+            <div className="mt-5 text-white flex items-center dm-sans justify-center lg:justify-start">
               <span>Powered by &nbsp;</span>
               <div>
                 <Image
@@ -49,7 +56,7 @@ function Hero() {
               alt="logo"
               width={500}
               height={500}
-              className="ml-20"
+              className="ml-20 lg:block hidden"
             />
           </div>
         </Reveal>
