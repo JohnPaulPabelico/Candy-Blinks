@@ -1,5 +1,5 @@
 "use client";
-import ConnectWallet from "@/components/connect-wallet";
+import NavBar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import useCreateCandyMachine from "@/hooks/useCreateCandyMachine";
 
@@ -18,18 +18,33 @@ export default function Home() {
 
   return (
     <>
-      <div className="w-full flex items-center justify-between p-4">
-        <p>Candy Blink</p>
-        <ConnectWallet />
-      </div>
+      <NavBar />
 
-      <Button
-        onClick={() => {
-          mutate();
-        }}
-      >
-        Fucking Create Candy Machine
-      </Button>
+      <div className="min-h-dvh flex flex-col gap-5 justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">
+        <div>Create Candy Machine</div>
+        <form className="flex flex-col w-fit gap-4">
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Collection Name"
+          />
+          <input
+            type="number"
+            name="items"
+            id="items"
+            placeholder="Number of Items"
+          />
+        </form>
+        <Button
+          onClick={() => {
+            mutate();
+          }}
+          className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+        >
+          Create Candy Machine
+        </Button>
+      </div>
     </>
   );
 }
