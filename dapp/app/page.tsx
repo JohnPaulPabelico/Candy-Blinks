@@ -47,7 +47,9 @@ export default function Home() {
       <NavBar />
 
       <div className="min-h-dvh flex flex-col gap-5 justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">
-        <div>Create Candy Machine</div>
+        <div className=" text-3xl dm-sans font-semibold text-white">
+          Create a <span className="text-red-400">Candy Machine</span>
+        </div>
         <Form {...form}>
           <FormField
             control={form.control}
@@ -56,7 +58,11 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Collection Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="enter name" {...field} />
+                  <Input
+                    placeholder="Enter Collection Name"
+                    {...field}
+                    className="bg-white text-black w-80"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -69,7 +75,12 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Number of Items</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" type="number" {...field} />
+                  <Input
+                    placeholder="shadcn"
+                    type="number"
+                    {...field}
+                    className="bg-white text-black w-80"
+                  />
                 </FormControl>
 
                 <FormMessage />
