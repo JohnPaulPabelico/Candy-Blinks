@@ -4,11 +4,9 @@ import {
   ActionPostRequest,
   ActionPostResponse,
   createPostResponse,
-  PostNextActionLink,
 } from "@solana/actions";
 import { mintTransaction, getBlink } from "./utils";
 import client from "@/app/lib/blinksightsClient";
-import { transferSolTransaction } from "./tip/spl-transfer";
 
 export const GET = async (
   req: Request,
@@ -86,23 +84,6 @@ export const POST = async (
       blinksightsIx: blinksightsActionIdentityInstruction,
     });
 
-    const nextAction = {
-      type: "action" as const,
-      title: "Successfully Minted",
-      label: "Tip 1 SOL",
-      icon: new URL("/CandyBlinks.png", new URL(req.url).origin).toString(),
-      description:
-        "Would you like to show appreciation for the artist's work? Consider leaving a tip to support their creative efforts and help them continue producing amazing art!",
-      links: {
-        actions: [
-          {
-            label: "Tip 0.1 SOL",
-            href: `/blinks/mint/${handle}/tip`, // Example of the next step link
-          },
-        ],
-      },
-    };
-
     const txHash = transaction.signatures[0];
     console.log("txHash: ", txHash);
 
@@ -112,8 +93,8 @@ export const POST = async (
         message: `Successfully minted!`,
         links: {
           next: {
-            type: "inline",
-            action: nextAction,
+            type: "post",
+            href: `/blinks/mint/${handle}/tip`, // Example of the next step link
           },
         },
       },
