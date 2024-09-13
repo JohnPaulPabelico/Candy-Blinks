@@ -33,7 +33,7 @@ import {
 } from "@metaplex-foundation/umi-web3js-adapters";
 import supabase from "@/app/lib/supabaseClient";
 
-const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
+export const ENDPOINT = process.env.NEXT_PUBLIC_RPC || clusterApiUrl("devnet");
 
 type MintTransactionParam = {
   toAddress: string;
