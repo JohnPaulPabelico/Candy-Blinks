@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 const steps = [
   {
@@ -89,7 +90,7 @@ export default function FormComponent() {
   const getFieldsForStep = (step: number): (keyof ICollectionSchema)[] => {
     switch (step) {
       case 0:
-        return ["collectionName"];
+        return ["collectionName", "collectionDescription"];
 
       default:
         return [];
@@ -170,8 +171,25 @@ export default function FormComponent() {
                     <FormControl>
                       <Input
                         placeholder="Enter Collection Name"
-                        {...field}
                         className="bg-white text-black w-80"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="collectionDescription"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Collection Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us a little bit about your NFT collection"
+                        className="bg-white text-black w-80 h-36 resize-none"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
