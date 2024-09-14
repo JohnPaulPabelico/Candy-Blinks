@@ -15,3 +15,15 @@ export const CreateCandyMachineSchemaDefaults: ICreateCandyMachineSchema = {
   collectionName: "",
   numberOfItems: 0,
 };
+
+export const CollectionSchema = z.object({
+  collectionName: z.string().min(2).max(50),
+  collectionDescription: z.string().min(2).max(50),
+});
+
+export type ICollectionSchema = z.infer<typeof CollectionSchema>;
+
+export const CollectionSchemaDefaults: ICollectionSchema = {
+  collectionName: "",
+  collectionDescription: "",
+};
