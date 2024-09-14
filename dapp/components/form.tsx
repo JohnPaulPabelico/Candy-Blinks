@@ -69,8 +69,32 @@ export default function FormComponent() {
   });
 
   const prev = () => setCurrentStep((step) => Math.max(0, step - 1));
-  const next = () =>
-    setCurrentStep((step) => Math.min(steps.length - 1, step + 1));
+  const next = async () => {
+    // Get the fields for the current step
+    const currentStepFields = getFieldsForStep(currentStep);
+
+    // Trigger validation only for the current step's fields
+    const stepValid = await form.trigger(currentStepFields);
+
+    if (stepValid) {
+      setCurrentStep((step) => Math.min(steps.length - 1, step + 1));
+    } else {
+      // Log the form state for debugging
+      console.log("Form State:", form.getValues());
+      console.log("Form Errors:", form.formState.errors);
+    }
+  };
+
+  // Helper function to get fields for each step
+  const getFieldsForStep = (step: number): (keyof ICollectionSchema)[] => {
+    switch (step) {
+      case 0:
+        return ["collectionName"];
+
+      default:
+        return [];
+    }
+  };
 
   return (
     <div className="flex">
