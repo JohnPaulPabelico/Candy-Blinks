@@ -2,14 +2,9 @@ import {
   createActionHeaders,
   NextActionPostRequest,
   ActionError,
-  CompletedAction,
-  ActionPostRequest,
-  ActionPostResponse,
   ACTIONS_CORS_HEADERS,
-  createPostResponse,
+  Action,
 } from "@solana/actions";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
-import { transferSolTransaction } from "./spl-transfer";
 
 const headers = createActionHeaders();
 
@@ -31,17 +26,32 @@ export const POST = async (
 
   const handle = params.handle;
 
-  const transaction = await transferSolTransaction({
-    from: body.account,
-    amount: 0.1,
-  });
+  const signature = body.signature;
+  try {
+    if (!signature) throw "Invalid signature";
+  } catch (err) {
+    throw 'Invalid "signature" provided';
+  }
 
-  const payload: ActionPostResponse = await createPostResponse({
-    fields: {
-      transaction,
-      message: `Tipped 0.1 SOL`,
+  const payload: Action = {
+    type: "action" as const,
+    title: "Successfully Minted",
+    label: "Tip 1 PYUSD",
+    icon: new URL("/CandyBlinks.png", new URL(req.url).origin).toString(),
+    description:
+      `Would you like to show appreciation for the artist's work? Consider leaving a tip to support their creative efforts and help them continue producing amazing art!` +
+      `\n\n ${signature}`,
+
+    links: {
+      actions: [
+        {
+          label: "Tip 1 PYUSD",
+          href: `/blinks/mint/${handle}/tip/tx`,
+        },
+      ],
     },
-  });
+  };
+
   return Response.json(payload, {
     headers: ACTIONS_CORS_HEADERS,
   });
