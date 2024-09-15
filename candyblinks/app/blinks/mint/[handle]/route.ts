@@ -88,6 +88,18 @@ export const POST = async (
       fields: {
         transaction,
         message: `Successfully minted!`,
+        links: {
+          /**
+           * this `href` will receive a POST request (callback)
+           * with the confirmed `signature`
+           *
+           * you could also use query params to track whatever step you are on
+           */
+          next: {
+            type: "post",
+            href: "/blinks/mint/" + handle + "/tip",
+          },
+        },
       },
     });
     return Response.json(payload, {
