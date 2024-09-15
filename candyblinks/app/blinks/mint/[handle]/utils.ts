@@ -132,7 +132,6 @@ export const mintTransaction = async (
 
         .setBlockhash(latestBlockhashResult.blockhash)
         .build(umi);
-      console.log("test");
 
       const web3JsTransaction = toWeb3JsLegacyTransaction(tx);
 
