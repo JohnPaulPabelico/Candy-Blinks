@@ -179,7 +179,7 @@ export default function FormComponent() {
           {currentStep === 0 && (
             <div className="font-semibold dm-sans leading-7 text-3xl text-white">
               Collection
-              <div className="mt-8 flex gap-5">
+              <div className="mt-8 flex gap-5 w-96">
                 <Dropzone
                   onDrop={(acceptedFiles) => {
                     if (acceptedFiles.length > 0) {
@@ -201,12 +201,12 @@ export default function FormComponent() {
                         {uploadedFile ? (
                           <div
                             onClick={handleRemoveFile}
-                            className="border-neutral-900 border bg-neutral-800 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
+                            className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
                           >
                             <FaTrashAlt />
                           </div>
                         ) : (
-                          <div className="border-neutral-900 border bg-neutral-800 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
+                          <div className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
                             <IoMdCloudUpload />
                           </div>
                         )}
@@ -239,7 +239,7 @@ export default function FormComponent() {
                       <FormControl>
                         <Input
                           placeholder="Enter Collection Name"
-                          className="bg-neutral-800 text-white border-neutral-900 w-80 h-12"
+                          className="bg-neutral-900 text-white border-neutral-900 w-96 h-12"
                           {...field}
                         />
                       </FormControl>
@@ -258,7 +258,7 @@ export default function FormComponent() {
                       <FormControl>
                         <Textarea
                           placeholder="Tell us a little bit about your NFT collection"
-                          className="bg-neutral-800 text-white border-neutral-900 w-80 h-36 resize-none"
+                          className="bg-neutral-900 text-white border-neutral-900 w-96 h-36 resize-none"
                           {...field}
                         />
                       </FormControl>
@@ -271,7 +271,7 @@ export default function FormComponent() {
           )}
 
           {currentStep === 1 && (
-            <div className="font-semibold dm-sans leading-7 text-3xl text-white">
+            <div className="font-semibold dm-sans leading-7 text-3xl text-white w-96">
               Assets
               <div className="mt-8 flex gap-5">
                 <Dropzone
@@ -299,12 +299,12 @@ export default function FormComponent() {
                         {uploadedImages && uploadedImages.length > 0 ? (
                           <div
                             onClick={handleRemoveImages}
-                            className="border-neutral-900 border bg-neutral-800 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
+                            className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
                           >
                             <FaTrashAlt />
                           </div>
                         ) : (
-                          <div className="border-neutral-900 border bg-neutral-800 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
+                          <div className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
                             <IoMdCloudUpload />
                           </div>
                         )}
@@ -348,12 +348,12 @@ export default function FormComponent() {
                         {uploadedMetadata && uploadedMetadata.length > 0 ? (
                           <div
                             onClick={handleRemoveMetadata}
-                            className="border-neutral-900 border bg-neutral-800 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
+                            className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
                           >
                             <FaTrashAlt />
                           </div>
                         ) : (
-                          <div className="border-neutral-900 border bg-neutral-800 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
+                          <div className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
                             <IoMdCloudUpload />
                           </div>
                         )}
@@ -392,7 +392,7 @@ export default function FormComponent() {
                           placeholder="Enter price in SOL"
                           type="number"
                           {...field}
-                          className="bg-neutral-800 text-white border-neutral-900 w-80 h-12"
+                          className="bg-neutral-900 text-white border-neutral-900 w-96 h-12 no-spinners"
                         />
                       </FormControl>
                       <FormMessage />
@@ -415,7 +415,7 @@ export default function FormComponent() {
                       <FormControl>
                         <Input
                           placeholder="Enter Wallet Address"
-                          className="bg-neutral-800 text-white border-neutral-900 w-80 h-12"
+                          className="bg-neutral-900 text-white border-neutral-900 w-96 h-12"
                           {...field}
                         />
                       </FormControl>
@@ -436,7 +436,7 @@ export default function FormComponent() {
                           placeholder="Enter percentage"
                           type="number"
                           {...field}
-                          className="bg-neutral-800 text-white border-neutral-900 w-80 h-12"
+                          className="bg-neutral-900 text-white border-neutral-900 w-96 h-12 no-spinners"
                         />
                       </FormControl>
                       <FormMessage />
