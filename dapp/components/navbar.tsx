@@ -6,8 +6,11 @@ import { RiEyeFill } from "react-icons/ri";
 import { IoMdSettings } from "react-icons/io";
 import ConnectWallet from "./connect-wallet";
 import { LuCandy } from "react-icons/lu";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NavBar: React.FC = () => {
+  const pathname = usePathname();
   return (
     <div
       className={`flex items-center fixed top-0 w-full px-5 min-h-30 justify-start transition py-5 backdrop-blur-md shadow-lg bg-black/50`}
@@ -23,22 +26,46 @@ const NavBar: React.FC = () => {
           />
         </div>
         <ul className="ml-10 flex justify-center items-center gap-5">
-          <li className="text-lg dm-sans text-white ml-5 flex justify-center items-center ">
-            <div className="flex justify-center items-center">
+          <li className="text-lg dm-sans ml-5 flex justify-center items-center">
+            <Link
+              href="/dashboard"
+              className={`flex justify-center items-center ${
+                pathname === "/dashboard" ? "text-red-300" : "text-white"
+              }`}
+            >
               <RxDashboard /> <span className="ml-2">Hub</span>
-            </div>
+            </Link>
           </li>
-          <li className="text-lg dm-sans text-red-300 ml-5 flex justify-center items-center">
-            <LuCandy /> <span className="ml-2 ">Create</span>
+          <li className="text-lg dm-sans ml-5 flex justify-center items-center">
+            <Link
+              href="/create"
+              className={`flex justify-center items-center ${
+                pathname === "/create" ? "text-red-300" : "text-white"
+              }`}
+            >
+              <LuCandy /> <span className="ml-2">Create</span>
+            </Link>
           </li>
-          <li className="text-lg dm-sans text-white ml-5 flex justify-center items-center">
-            <RiEyeFill /> <span className="ml-2 ">Enlist</span>
+          <li className="text-lg dm-sans ml-5 flex justify-center items-center">
+            <Link
+              href="/enlist"
+              className={`flex justify-center items-center ${
+                pathname === "/enlist" ? "text-red-300" : "text-white"
+              }`}
+            >
+              <RiEyeFill /> <span className="ml-2">Enlist</span>
+            </Link>
           </li>
-          <li className="text-lg dm-sans text-white ml-5 flex justify-center items-center">
-            <div className="flex justify-center items-center">
+          {/* <li className="text-lg dm-sans ml-5 flex justify-center items-center">
+            <Link
+              href="/settings"
+              className={`flex justify-center items-center ${
+                pathname === "/settings" ? "text-red-300" : "text-white"
+              }`}
+            >
               <IoMdSettings /> <span className="ml-2">Settings</span>
-            </div>
-          </li>
+            </Link>
+          </li> */}
         </ul>
       </div>
       <div className="ml-auto mr-5">

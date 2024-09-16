@@ -84,10 +84,19 @@ export const POST = async (
       blinksightsIx: blinksightsActionIdentityInstruction,
     });
 
+    const txHash = transaction.signatures[0];
+    console.log("txHash: ", txHash);
+
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
         message: `Successfully minted!`,
+        links: {
+          next: {
+            type: "post",
+            href: `/blinks/mint/${handle}/tip`, // Example of the next step link
+          },
+        },
       },
     });
     return Response.json(payload, {
