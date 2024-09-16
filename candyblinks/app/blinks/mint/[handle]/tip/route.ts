@@ -33,20 +33,30 @@ export const POST = async (
     throw 'Invalid "signature" provided';
   }
 
+  const requestUrl = new URL(req.url);
+  const baseHref = new URL(
+    `/blinks/mint/${handle}/tip`,
+    requestUrl.origin
+  ).toString();
+
   const payload: Action = {
     type: "action" as const,
     title: "Successfully Minted",
     label: "Tip 1 PYUSD",
     icon: new URL("/CandyBlinks.png", new URL(req.url).origin).toString(),
-    description:
-      `Would you like to show appreciation for the artist's work? Consider leaving a tip to support their creative efforts and help them continue producing amazing art!` +
-      `\n\n ${signature}`,
-
+    description: `Do you enjoy using our service? Consider leaving a tip to support our team and help us continue improving your experience!`,
     links: {
       actions: [
         {
-          label: "Tip 1 PYUSD",
-          href: `/blinks/mint/${handle}/tip/tx`,
+          label: "Tip PYUSD",
+          href: `${baseHref}/{amount}`,
+          parameters: [
+            {
+              name: "amount",
+              label: "Enter the amount of PYUSD to tip",
+              required: true,
+            },
+          ],
         },
       ],
     },
