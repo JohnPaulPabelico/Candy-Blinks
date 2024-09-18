@@ -16,12 +16,15 @@ import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store/store";
 import { ICollectionDetailsSchema } from "@/lib/schemas/create-candy_machine_v2.schema";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
+import Image from "next/image";
 
 export default function CollectionDetails() {
   const form = useFormContext<ICollectionDetailsSchema>();
-  const page = useStore((state) => state.page);
-  const setPage = useStore((state) => state.setPage);
+  const page = useStore((state: { page: number }) => state.page);
+  const setPage = useStore(
+    (state: { setPage: (page: number) => void }) => state.setPage
+  );
 
   const prev = () => setPage(Math.max(0, page - 1));
 
@@ -35,9 +38,12 @@ export default function CollectionDetails() {
     }
   };
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    form.setValue("collectionImage", acceptedFiles[0]);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      form.setValue("collectionImage", acceptedFiles[0]);
+    },
+    [form]
+  );
 
   const handleRemoveFile = () => {
     form.setValue("collectionImage", null);
@@ -57,7 +63,7 @@ export default function CollectionDetails() {
               "image/svg+xml": [],
             }}
           >
-            {({ getRootProps, getInputProps }) => (
+            {({ getRootProps, getInputProps, isDragActive }) => (
               <section>
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -65,12 +71,35 @@ export default function CollectionDetails() {
                   {form.watch("collectionImage") ? (
                     <div
                       onClick={handleRemoveFile}
-                      className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-red-500 rounded-lg p-8 relative"
+                      className={`border-neutral-900 border ${
+                        isDragActive ? "bg-neutral-700" : "bg-neutral-900"
+                      } hover:bg-neutral-700 transition-colors cursor-pointer text-red-500 rounded-lg  relative`}
                     >
-                      <FaTrashAlt />
+                      <div className="absolute inset-0 flex justify-center items-center rounded-lg">
+                        <Image
+                          src={
+                            form.watch("collectionImage")
+                              ? URL.createObjectURL(
+                                  form.watch("collectionImage") as File
+                                )
+                              : ""
+                          }
+                          alt="logo"
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-lg"
+                        />
+                      </div>
+                      <div className="relative z-10 p-8 hover:opacity-70 opacity-0 bg-neutral-900 rounded-lg transition-opacity">
+                        <FaTrashAlt />
+                      </div>
                     </div>
                   ) : (
-                    <div className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
+                    <div
+                      className={`border-neutral-900 border ${
+                        isDragActive ? "bg-neutral-700" : "bg-neutral-900"
+                      } hover:bg-neutral-700 transition-colors cursor-pointer text-neutral-200 rounded-lg relative p-8 flex items-center justify-center`}
+                    >
                       <IoMdCloudUpload />
                     </div>
                   )}
@@ -86,11 +115,6 @@ export default function CollectionDetails() {
             <div className="text-sm dm-sans font-normal text-neutral-400">
               Supported file types are JPG, PNG, GIF, and SVG.
             </div>
-            {form.watch("collectionImage") && (
-              <div className="mt-5 text-sm dm-sans font-normal text-white">
-                Uploaded file: {form.watch("collectionImage")?.name}
-              </div>
-            )}
           </div>
         </div>
         <div className="mt-5">

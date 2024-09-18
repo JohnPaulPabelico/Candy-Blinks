@@ -16,15 +16,18 @@ import React, { useCallback } from "react";
 export default function UploadMetadatas() {
   const form = useFormContext<IAssetsSchema>();
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    form.setValue("assetsMetadata", [...acceptedFiles]);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      form.setValue("assetsMetadata", [...acceptedFiles]);
+    },
+    [form]
+  );
 
   const handleRemoveFile = () => {
     form.setValue("assetsMetadata", []);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
   });
 
@@ -55,20 +58,26 @@ export default function UploadMetadatas() {
                       <FaTrashAlt />
                     </div>
                   ) : (
-                    <div className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
+                    <div
+                      className={`border-neutral-900 border ${
+                        isDragActive ? "bg-neutral-700" : "bg-neutral-900"
+                      } hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative`}
+                    >
                       <IoMdCloudUpload />
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <div className="text-base dm-sans font-normal">Metadata</div>
+                  <div className="text-base dm-sans font-normal">
+                    Metadata Folder
+                  </div>
                   <div className="text-sm dm-sans font-normal text-neutral-400">
                     Uploaded your metadata files in JSON format.
                   </div>
                   {form.watch("assetsMetadata") &&
                     form.watch("assetsMetadata").length > 0 && (
-                      <div className="mt-5 text-sm dm-sans font-normal text-white">
+                      <div className="mt-2 text-sm dm-sans font-normal text-white">
                         Uploaded Metadata: {form.watch("assetsMetadata").length}
                       </div>
                     )}

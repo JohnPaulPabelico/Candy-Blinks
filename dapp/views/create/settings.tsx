@@ -1,14 +1,18 @@
 "use client";
-
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store/store";
-import { IAssetsSchema } from "@/lib/schemas/create-candy_machine_v2.schema";
-import UploadImages from "./upload-images";
-import UploadMetadatas from "./upload-metadata";
+import { ISettingsSchema } from "@/lib/schemas/create-candy_machine_v2.schema";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-export default function Assets() {
-  const form = useFormContext<IAssetsSchema>();
+export default function Settings() {
+  const form = useFormContext<ISettingsSchema>();
   const page = useStore((state: { page: number }) => state.page);
   const setPage = useStore(
     (state: { setPage: (page: number) => void }) => state.setPage
@@ -28,11 +32,26 @@ export default function Assets() {
 
   return (
     <>
-      <div className="font-semibold dm-sans leading-7 text-3xl text-white w-96">
-        Assets
-        <div className="mt-8 flex gap-5 flex-col">
-          <UploadImages />
-          <UploadMetadatas />
+      <div className="font-semibold dm-sans leading-7 text-3xl text-white">
+        Settings
+        <div className="mt-5">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price in SOL</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter price in SOL"
+                    type="number"
+                    {...field}
+                    className="bg-neutral-900 text-white border-neutral-900 w-96 h-12 no-spinners"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </div>
       </div>
       <div className="mt-8 pt-5 ml-auto">

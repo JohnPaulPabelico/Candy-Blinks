@@ -39,3 +39,31 @@ export const AssetsSchemaDefaults: IAssetsSchema = {
   assetImages: [],
   assetsMetadata: [],
 };
+
+export const SettingsSchema = z.object({
+  price: z.coerce.number().positive(),
+});
+
+export type ISettingsSchema = z.infer<typeof SettingsSchema>;
+
+export const SettingsSchemaDefaults: ISettingsSchema = {
+  price: 0,
+};
+
+const SOLANA_ADDRESS_REGEX = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+
+export const RoyaltiesSchema = z.object({
+  walletAddress: z
+    .string()
+    .min(32, "Invalid Solana wallet address")
+    .max(44, "Invalid Solana wallet address")
+    .regex(SOLANA_ADDRESS_REGEX, "Invalid Solana wallet address"),
+  royaltyPercentage: z.coerce.number().positive().max(100),
+});
+
+export type IRoyaltiesSchema = z.infer<typeof RoyaltiesSchema>;
+
+export const RoyaltiesSchemaDefaults: IRoyaltiesSchema = {
+  walletAddress: "",
+  royaltyPercentage: 0,
+};
