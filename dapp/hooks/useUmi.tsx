@@ -7,6 +7,7 @@ import { mplCore } from "@metaplex-foundation/mpl-core";
 import { mplCandyMachine } from "@metaplex-foundation/mpl-core-candy-machine";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
+import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
 
 export default function useUmi() {
   const { connection } = useConnection();
@@ -17,6 +18,7 @@ export default function useUmi() {
   useEffect(() => {
     setUmi(
       createUmi(connection)
+        .use(irysUploader())
         .use(walletAdapterIdentity(wallet))
         .use(mplToolbox())
         .use(mplCore())
