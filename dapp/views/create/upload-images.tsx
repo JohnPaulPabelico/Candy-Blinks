@@ -25,16 +25,19 @@ export default function UploadImages() {
   useEffect(() => {
     console.log(data);
   }, [data]);
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    mutate({ images: acceptedFiles });
-    form.setValue("assetImages", [...acceptedFiles]);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      mutate({ images: acceptedFiles });
+      form.setValue("assetImages", [...acceptedFiles]);
+    },
+    [mutate, form]
+  );
 
   const handleRemoveFile = () => {
     form.setValue("assetImages", []);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
   });
 
@@ -65,20 +68,26 @@ export default function UploadImages() {
                       <FaTrashAlt />
                     </div>
                   ) : (
-                    <div className="border-neutral-900 border bg-neutral-900 hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative">
+                    <div
+                      className={`border-neutral-900 border ${
+                        isDragActive ? "bg-neutral-700" : "bg-neutral-900"
+                      } hover:bg-neutral-700 transition-all cursor-pointer text-neutral-200 rounded-lg p-8 relative`}
+                    >
                       <IoMdCloudUpload />
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <div className="text-base dm-sans font-normal">Images</div>
+                  <div className="text-base dm-sans font-normal">
+                    Images Folder
+                  </div>
                   <div className="text-sm dm-sans font-normal text-neutral-400">
                     Supported file types are JPG, PNG, GIF, and SVG.
                   </div>
                   {form.watch("assetImages") &&
                     form.watch("assetImages").length > 0 && (
-                      <div className="mt-5 text-sm dm-sans font-normal text-white">
+                      <div className="mt-2 text-sm dm-sans font-normal text-white">
                         Uploaded Images: {form.watch("assetImages").length}
                       </div>
                     )}

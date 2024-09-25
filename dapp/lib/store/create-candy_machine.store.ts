@@ -5,7 +5,7 @@ interface IState {
 }
 
 const initialState: IState = {
-  page: 1,
+  page: 0,
 };
 
 interface IActions {

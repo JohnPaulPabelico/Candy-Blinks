@@ -1,11 +1,4 @@
 "use client";
-
-import { useState } from "react";
-import {
-  CollectionSchema,
-  CollectionSchemaDefaults,
-  ICollectionSchema,
-} from "@/lib/schemas/create-candy_machine.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { MdCollections } from "react-icons/md";
@@ -13,28 +6,22 @@ import { BsFillFileImageFill } from "react-icons/bs";
 import { IoMdSettings } from "react-icons/io";
 import { FaMoneyBill } from "react-icons/fa6";
 import { IoRocketSharp } from "react-icons/io5";
-import { IoMdCloudUpload } from "react-icons/io";
-import { FaTrashAlt } from "react-icons/fa";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import Dropzone from "react-dropzone";
 import { useStore } from "@/lib/store/store";
-import CollectionDetails from "./collection-details";
 import {
   CollectionDetailsSchema,
   CollectionDetailsSchemaDefaults,
   AssetsSchema,
   AssetsSchemaDefaults,
+  SettingsSchema,
+  SettingsSchemaDefaults,
+  RoyaltiesSchema,
+  RoyaltiesSchemaDefaults,
 } from "@/lib/schemas/create-candy_machine_v2.schema";
 import Assets from "./assets";
+import Settings from "./settings";
+import CollectionDetails from "./collection-details";
+import Royalties from "./royalties";
+import Deploy from "./deploy";
 
 const steps = [
   {
@@ -77,46 +64,22 @@ const resolvers = [
     schema: zodResolver(AssetsSchema),
     defaults: AssetsSchemaDefaults,
   },
+  {
+    schema: zodResolver(SettingsSchema),
+    defaults: SettingsSchemaDefaults,
+  },
+  {
+    schema: zodResolver(RoyaltiesSchema),
+    defaults: RoyaltiesSchemaDefaults,
+  },
 ];
 
 export default function CreateView() {
-  const page = useStore((state) => state.page);
-  const setPage = useStore((state) => state.setPage);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [uploadedMetadata, setUploadedMetadata] = useState<File[]>([]);
-
+  const page = useStore((state: { page: number }) => state.page);
   const form = useForm({
-    resolver: resolvers[page].schema,
-    // @ts-ignore
-    defaultValues: resolvers[page].defaults,
+    resolver: page < resolvers.length ? resolvers[page].schema : undefined,
+    defaultValues: page < resolvers.length ? resolvers[page].defaults : {},
   });
-
-  // Helper function to get fields for each step
-  const getFieldsForStep = (step: number): (keyof ICollectionSchema)[] => {
-    switch (step) {
-      case 0:
-        return ["collectionName", "collectionDescription"];
-      case 2:
-        return ["price"];
-      case 3:
-        return ["walletAddress", "royaltyPercentage"];
-      default:
-        return [];
-    }
-  };
-
-  const handleRemoveFile = () => {
-    setUploadedFile(null);
-  };
-
-  const handleRemoveImages = () => {
-    setUploadedImages([]);
-  };
-
-  const handleRemoveMetadata = () => {
-    setUploadedMetadata([]);
-  };
 
   return (
     <div className="flex">
@@ -182,7 +145,9 @@ export default function CreateView() {
         >
           {page === 0 && <CollectionDetails />}
           {page === 1 && <Assets />}
-
+          {page === 2 && <Settings />}
+          {page === 3 && <Royalties />}
+          {page === 4 && <Deploy />}
           {/* {page === 1 && (
             <div className="font-semibold dm-sans leading-7 text-3xl text-white w-96">
               Assets
