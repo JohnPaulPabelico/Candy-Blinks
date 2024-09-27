@@ -73,7 +73,7 @@ export default function Whitelist() {
 
           <Button
             onClick={form.handleSubmit(onSubmit)}
-            className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+            className="mt-10 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
           >
             Join waitlist
           </Button>

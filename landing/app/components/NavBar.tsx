@@ -1,12 +1,12 @@
-"use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
-
-import React from "react";
-import { FaBars } from "react-icons/fa6";
+import { FaBars } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
-export default function Navbar() {
+const NavBar: React.FC = () => {
   const [barState, setBarState] = useState(false);
   const [isTop, setIsTop] = useState(true);
 
@@ -19,7 +19,8 @@ export default function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  });
+
   return (
     <div
       className={`flex items-center fixed top-0 w-full px-5 min-h-30 justify-between z-10 transition py-5 ${
@@ -90,14 +91,27 @@ export default function Navbar() {
       <div>
         <div className={`${barState ? "block" : "lg:block hidden"}`}>
           <div className="z-999 lg:block hidden ">
-            <div className="flex gap-2 items-center">
-              <Link
-                className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
-                href="/whitelist"
-              >
-                Join Waitlist
-              </Link>
-            </div>
+            <SignedOut>
+              <div className="flex gap-2 items-center">
+                {/* <Link
+                  className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
+                  href="/dashboard"
+                >
+                  Get Started!
+                </Link> */}
+                <WalletMultiButton />
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <div>
+                <Link
+                  className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
+                  href="/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </div>
+            </SignedIn>
           </div>
         </div>
       </div>
@@ -127,4 +141,6 @@ export default function Navbar() {
       </div>
     </div>
   );
-}
+};
+
+export default NavBar;
