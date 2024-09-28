@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -18,8 +17,27 @@ import {
   WhitelistSchemaDefaults,
 } from "@/lib/schemas/whitelist.schema";
 import useJoinWaitlist from "@/hooks/useJoinWaitlist";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
+import { BsTwitterX } from "react-icons/bs";
+import Link from "next/link";
+
+const useBackgroundCarousel = (images: string[], interval: number) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setDirection(1);
+  }, [images.length]);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, interval);
+    return () => clearInterval(timer);
+  }, [interval, nextSlide]);
+
+  return { currentIndex, direction };
+};
 
 export default function Whitelist() {
   const { mutate, isSuccess, isPending, error } = useJoinWaitlist();
@@ -36,23 +54,45 @@ export default function Whitelist() {
     mutate({ ...values });
   }
 
+  const backgroundImages = [
+    "/whitelist/1.gif",
+    "/whitelist/2.webp",
+    "/whitelist/3.gif",
+    "/whitelist/4.gif",
+    "/whitelist/5.gif",
+    "/whitelist/6.gif",
+    "/whitelist/7.gif",
+    "/whitelist/8.gif",
+    "/whitelist/9.gif",
+  ];
+  const { currentIndex } = useBackgroundCarousel(backgroundImages, 5000);
+
   return (
     <section className="relative min-h-screen flex flex-col gap-5 justify-center items-center overflow-hidden">
-      {/* Background GIF */}
-      <Image
-        src="/Candy-BG.webp" // Replace with your GIF file path
-        alt="Background"
-        layout="fill"
-        objectFit="cover"
-        quality={100}
-        priority
-      />
+      <div className="absolute inset-0 w-full h-full">
+        {backgroundImages.map((src, index) => (
+          <div
+            key={src}
+            className="absolute inset-0 w-full h-full transition-transform duration-1000 ease-in-out"
+            style={{
+              transform: `translateX(${100 * (index - currentIndex)}%)`,
+            }}
+          >
+            <Image
+              src={src}
+              alt={`Background ${index + 1}`}
+              layout="fill"
+              objectFit="cover"
+              quality={100}
+              priority
+            />
+          </div>
+        ))}
+      </div>
 
-      {/* Overlay to ensure text readability */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10% to-neutral-950 opacity-90"></div>
 
-      {/* Content */}
-      <div className="container flex justify-center items-center flex-col relative z-10">
+      <div className="mb-16 container flex justify-center items-center flex-col relative z-10">
         <div className="w-[250px] h-[180px] overflow-hidden">
           <Image
             src="/logo.png"
@@ -92,6 +132,16 @@ export default function Whitelist() {
             Join waitlist
           </Button>
         </Form>
+      </div>
+
+      <div className="absolute bottom-10 flex justify-center items-center">
+        <Link
+          href="https://x.com/CandyBlinks_"
+          target="_blank"
+          className="text-white text-3xl hover:text-neutral-500 p-4 transition-all"
+        >
+          <BsTwitterX />
+        </Link>
       </div>
     </section>
   );
