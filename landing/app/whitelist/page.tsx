@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,7 +18,6 @@ import {
   WhitelistSchemaDefaults,
 } from "@/lib/schemas/whitelist.schema";
 import useJoinWaitlist from "@/hooks/useJoinWaitlist";
-import { getRandomValues } from "crypto";
 import { useEffect } from "react";
 import Image from "next/image";
 
@@ -37,8 +37,22 @@ export default function Whitelist() {
   }
 
   return (
-    <section className="min-h-dvh flex flex-col gap-5 justify-center items-center bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10%   to-neutral-950">
-      <div className="container flex justify-center items-center flex-col">
+    <section className="relative min-h-screen flex flex-col gap-5 justify-center items-center overflow-hidden">
+      {/* Background GIF */}
+      <Image
+        src="/Candy-BG.webp" // Replace with your GIF file path
+        alt="Background"
+        layout="fill"
+        objectFit="cover"
+        quality={100}
+        priority
+      />
+
+      {/* Overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-pink-950 from-10% to-neutral-950 opacity-90"></div>
+
+      {/* Content */}
+      <div className="container flex justify-center items-center flex-col relative z-10">
         <div className="w-[250px] h-[180px] overflow-hidden">
           <Image
             src="/logo.png"
@@ -48,7 +62,7 @@ export default function Whitelist() {
             className="object-cover object-center"
           />
         </div>
-        <div className=" text-5xl dm-sans font-semibold text-red-400">
+        <div className="text-5xl dm-sans font-semibold text-red-400">
           Candy Blinks
         </div>
         <Form {...form}>
