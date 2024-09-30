@@ -21,6 +21,8 @@ import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { BsTwitterX } from "react-icons/bs";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const useBackgroundCarousel = (images: string[], interval: number) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,14 +43,43 @@ const useBackgroundCarousel = (images: string[], interval: number) => {
 
 export default function Whitelist() {
   const { mutate, isSuccess, isPending, error } = useJoinWaitlist();
+  const { toast } = useToast();
   const form = useForm<IWhitelistSchema>({
     resolver: zodResolver(WhitelistSchema),
     defaultValues: WhitelistSchemaDefaults,
   });
 
   useEffect(() => {
-    console.log(error);
-  }, [error]);
+    if (isSuccess) {
+      toast({
+        title: "Success!",
+        description: "You've been added to the waitlist.",
+        action: (
+          <ToastAction altText="Close" className="hover:bg-neutral-700">
+            Close
+          </ToastAction>
+        ),
+        className:
+          "bg-neutral-900 border-lime-900 border-2 p-5 text-white rounded-xl hover:shadow-lg hover:shadow-lime-800/50 hover:border-lime-800 transition duration-200",
+      });
+    }
+  }, [isSuccess, toast]);
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to join the waitlist. Please try again.",
+        action: (
+          <ToastAction altText="Close" className="hover:bg-neutral-700">
+            Close
+          </ToastAction>
+        ),
+        className:
+          "bg-neutral-900 border-pink-950 border-2 p-5 text-white rounded-xl hover:shadow-lg hover:shadow-pink-900/50 hover:border-pink-900 transition duration-200",
+      });
+    }
+  }, [error, toast]);
 
   function onSubmit(values: IWhitelistSchema) {
     mutate({ ...values });
@@ -125,12 +156,12 @@ export default function Whitelist() {
               )}
             />
           </div>
-
           <Button
             onClick={form.handleSubmit(onSubmit)}
             className="mt-10 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition duration-200 hover:shadow-lg cursor-pointer"
+            disabled={isPending}
           >
-            Join waitlist
+            {isPending ? "Joining..." : "Join waitlist"}
           </Button>
         </Form>
       </div>
