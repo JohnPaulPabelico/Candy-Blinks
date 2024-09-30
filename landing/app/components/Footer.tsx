@@ -1,8 +1,5 @@
-import React, { useContext } from "react";
 import Image from "next/image";
 import { BsTwitterX } from "react-icons/bs";
-import { BsFacebook } from "react-icons/bs";
-import { BsDiscord } from "react-icons/bs";
 import Link from "next/link";
 
 function Footer() {

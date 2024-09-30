@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import Image from "next/image";
 import { FaCode } from "react-icons/fa6";
 import { TbBoxMultiple } from "react-icons/tb";

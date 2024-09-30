@@ -3,7 +3,7 @@ import service from "../services/whitelist.service";
 import { connectDB, transaction } from "../utils/transaction";
 import { startSession, ClientSession } from "mongoose";
 
-export async function GET(request: Request) {
+export async function GET() {
   return NextResponse.json({ msg: "Hello from server" });
 }
 
@@ -23,8 +23,8 @@ export async function POST(request: Request) {
         "Create user"
       )
     );
-  } catch (_: any) {
-    console.log("error");
+  } catch (e) {
+    console.log("error: ", e);
   }
 
   return NextResponse.json({});

@@ -14,8 +14,6 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-require("@solana/wallet-adapter-react-ui/styles.css");
-
 interface IProvidersProps {
   children: React.ReactNode;
 }
@@ -25,7 +23,7 @@ export default function Providers({ children }: IProvidersProps) {
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  const wallets = useMemo(() => [new BitgetWalletAdapter()], [network]);
+  const wallets = useMemo(() => [new BitgetWalletAdapter()], []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
