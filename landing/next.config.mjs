@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: false,
   webpack: (config) => {
     config.externals.push("pino-pretty", "lokijs", "encoding");
-    config.experiments = {
-      topLevelAwait: true,
-    };
+    // config.experiments = {
+    //   topLevelAwait: true,
+    // };
     return config;
   },
   images: {
