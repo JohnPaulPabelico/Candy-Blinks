@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { API_INSTANCE } from "@/lib/http";
 import axios from "axios";
 
 interface IJoinWaitlistArgs {
@@ -9,9 +8,13 @@ interface IJoinWaitlistArgs {
 export default function useJoinWaitlist() {
   const mutation = useMutation({
     mutationFn: async (args: IJoinWaitlistArgs) => {
-      const response = await axios.post("api/whitelist", {
+      const { data } = await axios.post("api/whitelist", {
         walletAddress: args.walletAddress,
       });
+
+      if (data.status === "fail") {
+        throw new Error();
+      }
     },
   });
   return { ...mutation };

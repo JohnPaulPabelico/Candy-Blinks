@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 export const transaction = async (
   session: any,
   operations: any,
@@ -27,3 +28,34 @@ export const transaction = async (
       session.endSession();
     });
 };
+
+// @ts-ignore
+let cached = global.mongoose;
+
+if (!cached) {
+  // @ts-ignore
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+export async function connectDB() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    };
+
+    cached.promise = mongoose
+      .connect(
+        "mongodb+srv://admin:admin@cluster0.dceq2mc.mongodb.net/candy-blinks?retryWrites=true&w=majority",
+        opts
+      )
+      .then((mongoose) => {
+        return mongoose;
+      });
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
