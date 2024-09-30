@@ -81,10 +81,11 @@ export default function Whitelist() {
             <Image
               src={src}
               alt={`Background ${index + 1}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               quality={100}
               priority
+              unoptimized
             />
           </div>
         ))}
