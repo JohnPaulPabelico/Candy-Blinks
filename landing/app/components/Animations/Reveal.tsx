@@ -1,6 +1,6 @@
 //Reveal animation in the works
 import React, { useRef, useEffect } from "react";
-import { motion, useInView, useAnimation, delay } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
 
 interface props {
   children: JSX.Element;

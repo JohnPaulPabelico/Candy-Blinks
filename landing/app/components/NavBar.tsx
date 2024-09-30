@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const NavBar: React.FC = () => {
   const [barState, setBarState] = useState(false);
@@ -91,27 +89,15 @@ const NavBar: React.FC = () => {
       <div>
         <div className={`${barState ? "block" : "lg:block hidden"}`}>
           <div className="z-999 lg:block hidden ">
-            <SignedOut>
-              <div className="flex gap-2 items-center">
-                {/* <Link
+            <div className="flex gap-2 items-center">
+              {/* <Link
                   className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
                   href="/dashboard"
                 >
                   Get Started!
                 </Link> */}
-                <WalletMultiButton />
-              </div>
-            </SignedOut>
-            <SignedIn>
-              <div>
-                <Link
-                  className="text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded duration-200 transition"
-                  href="/dashboard"
-                >
-                  Dashboard
-                </Link>
-              </div>
-            </SignedIn>
+              <WalletMultiButton />
+            </div>
           </div>
         </div>
       </div>
