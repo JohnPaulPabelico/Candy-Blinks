@@ -21,6 +21,9 @@ export default function Royalties() {
     (state: { setPage: (page: number) => void }) => state.setPage
   );
 
+  const { getValues } = useFormContext<{ royalties: IRoyaltiesSchema }>();
+  const royalties = getValues("royalties");
+
   const prev = () => setPage(Math.max(0, page - 1));
 
   const next = async () => {
@@ -31,6 +34,20 @@ export default function Royalties() {
       console.log("Form State:", form.getValues());
       console.log("Form Errors:", form.formState.errors);
     }
+  };
+
+  const formatStartDate = (start: string | Date) => {
+    if (start instanceof Date) {
+      return start.toLocaleDateString(); // Convert Date to a readable string
+    }
+    return start; // Return string if it's already a string
+  };
+
+  const formatEndDate = (end: Date | undefined) => {
+    if (end instanceof Date) {
+      return end.toLocaleDateString(); // Convert Date to a readable string
+    }
+    return "No end date set"; // Return a default message for undefined
   };
 
   return (
@@ -76,16 +93,39 @@ export default function Royalties() {
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
-              Wallet Address:&nbsp;
-              {form.getValues("walletAddress")}
+              Start Date:&nbsp;
+              {formatStartDate(form.getValues("start"))}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
-              Royalty Percentage:&nbsp;
-              {form.getValues("royaltyPercentage")}%
+              End Date:&nbsp;
+              {formatEndDate(form.getValues("end"))}
             </div>
           </div>
+          <div className="mt-2">
+            <div className="text-base dm-sans font-normal">
+              Reveal Later:&nbsp;
+              {form.getValues("isRevealLaterEnabled") ? "Yes" : "No"}
+            </div>
+          </div>{" "}
+          {royalties &&
+            royalties.map((royalty, index) => (
+              <div key={index} className="mt-2">
+                <div className="mt-2">
+                  <div className="text-base dm-sans font-normal">
+                    Wallet Address {index}: &nbsp;
+                    {royalty.walletAddress}
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <div className="text-base dm-sans font-normal">
+                    Royalty Percentage {index}:&nbsp;
+                    {royalty.royaltyPercentage}%
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       <div className="mt-8 pt-5 ml-auto">
