@@ -74,12 +74,35 @@ const resolvers = [
   },
 ];
 
+function isCollectionPageDefaults(value: any): value is {
+  collectionImage: File | null;
+  collectionName: string;
+  collectionDescription: string;
+} {
+  return (
+    value &&
+    "collectionImage" in value &&
+    "collectionName" in value &&
+    "collectionDescription" in value
+  );
+}
+
 export default function CreateView() {
   const page = useStore((state: { page: number }) => state.page);
   const form = useForm({
     resolver: page < resolvers.length ? resolvers[page].schema : undefined,
-    defaultValues: page < resolvers.length ? resolvers[page].defaults : {},
+    defaultValues:
+      page < resolvers.length &&
+      isCollectionPageDefaults(resolvers[page].defaults)
+        ? resolvers[page].defaults
+        : {}, 
   });
+
+    // OLD ONE, HAVING ISSUES ON BUILD
+    // const form = useForm({
+    //   resolver: page < resolvers.length ? resolvers[page].schema : undefined,
+    //   defaultValues: page < resolvers.length ? resolvers[page].defaults : {},
+    // });
 
   return (
     <div className="flex">

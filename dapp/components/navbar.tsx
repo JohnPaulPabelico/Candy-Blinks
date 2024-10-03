@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { RxDashboard } from "react-icons/rx";
 import { RiEyeFill } from "react-icons/ri";
-import { IoMdSettings } from "react-icons/io";
 import ConnectWallet from "./connect-wallet";
 import { LuCandy } from "react-icons/lu";
 import Link from "next/link";

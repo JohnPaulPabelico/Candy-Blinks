@@ -1,4 +1,4 @@
-"use client";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store/store";
@@ -11,44 +11,42 @@ import {
 
 type CombinedSchema = ICollectionDetailsSchema &
   IAssetsSchema &
-  ISettingsSchema &
-  IRoyaltiesSchema;
+  ISettingsSchema & { royalties: IRoyaltiesSchema };
 
 export default function Royalties() {
-  const form = useFormContext<CombinedSchema>();
+  const { getValues, trigger } = useFormContext<CombinedSchema>();
   const page = useStore((state: { page: number }) => state.page);
   const setPage = useStore(
     (state: { setPage: (page: number) => void }) => state.setPage
   );
 
-  const { getValues } = useFormContext<{ royalties: IRoyaltiesSchema }>();
-  const royalties = getValues("royalties");
-
   const prev = () => setPage(Math.max(0, page - 1));
 
   const next = async () => {
-    const stepValid = await form.trigger();
+    const stepValid = await trigger();
     if (stepValid) {
       setPage(page + 1);
     } else {
-      console.log("Form State:", form.getValues());
-      console.log("Form Errors:", form.formState.errors);
+      console.log("Form State:", getValues());
+      console.log("Form Errors:", trigger());
     }
   };
 
   const formatStartDate = (start: string | Date) => {
     if (start instanceof Date) {
-      return start.toLocaleDateString(); // Convert Date to a readable string
+      return start.toLocaleDateString();
     }
-    return start; // Return string if it's already a string
+    return start;
   };
 
   const formatEndDate = (end: Date | undefined) => {
     if (end instanceof Date) {
-      return end.toLocaleDateString(); // Convert Date to a readable string
+      return end.toLocaleDateString();
     }
-    return "No end date set"; // Return a default message for undefined
+    return "No end date set";
   };
+
+  const royalties = getValues("royalties");
 
   return (
     <>
@@ -58,74 +56,73 @@ export default function Royalties() {
           <div className="text-lg dm-sans font-semibold ">Overview</div>
           <div className="mt-5">
             <div className="text-base dm-sans font-normal">
-              Collection Name:&nbsp;{form.getValues("collectionName")}
+              Collection Name:&nbsp;{getValues("collectionName")}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Collection Description:&nbsp;
-              {form.getValues("collectionDescription")}
+              {getValues("collectionDescription")}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Collection Image:&nbsp;
-              {form.getValues("collectionImage")?.name || "Not uploaded"}
+              {getValues("collectionImage")?.name || "Not uploaded"}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Uploaded Images:&nbsp;
-              {form.getValues("assetImages").length} images
+              {getValues("assetImages").length} images
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Uploaded Metadata:&nbsp;
-              {form.getValues("assetsMetadata").length} files
+              {getValues("assetsMetadata").length} files
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Price:&nbsp;
-              {form.getValues("price")} SOL
+              {getValues("price")} SOL
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Start Date:&nbsp;
-              {formatStartDate(form.getValues("start"))}
+              {formatStartDate(getValues("start"))}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               End Date:&nbsp;
-              {formatEndDate(form.getValues("end"))}
+              {formatEndDate(getValues("end"))}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Reveal Later:&nbsp;
-              {form.getValues("isRevealLaterEnabled") ? "Yes" : "No"}
+              {getValues("isRevealLaterEnabled") ? "Yes" : "No"}
             </div>
-          </div>{" "}
-          {royalties &&
-            royalties.map((royalty, index) => (
-              <div key={index} className="mt-2">
-                <div className="mt-2">
-                  <div className="text-base dm-sans font-normal">
-                    Wallet Address {index}: &nbsp;
-                    {royalty.walletAddress}
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <div className="text-base dm-sans font-normal">
-                    Royalty Percentage {index}:&nbsp;
-                    {royalty.royaltyPercentage}%
-                  </div>
+          </div>
+          {Object.entries(royalties).map(([key, value], index) => (
+            <div key={key} className="mt-2">
+              <div className="mt-2">
+                <div className="text-base dm-sans font-normal">
+                  Wallet Address {index + 1}: &nbsp;
+                  {value.walletAddress}
                 </div>
               </div>
-            ))}
+              <div className="mt-2">
+                <div className="text-base dm-sans font-normal">
+                  Royalty Percentage {index + 1}:&nbsp;
+                  {value.royaltyPercentage}%
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       <div className="mt-8 pt-5 ml-auto">
