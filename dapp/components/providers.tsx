@@ -23,7 +23,7 @@ export default function Providers({ children }: IProvidersProps) {
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  const wallets = useMemo(() => [new BitgetWalletAdapter()], [network]);
+  const wallets = useMemo(() => [new BitgetWalletAdapter()], []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>

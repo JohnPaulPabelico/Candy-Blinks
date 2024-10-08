@@ -1,4 +1,4 @@
-"use client";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store/store";
@@ -11,11 +11,10 @@ import {
 
 type CombinedSchema = ICollectionDetailsSchema &
   IAssetsSchema &
-  ISettingsSchema &
-  IRoyaltiesSchema;
+  ISettingsSchema & { royalties: IRoyaltiesSchema };
 
 export default function Royalties() {
-  const form = useFormContext<CombinedSchema>();
+  const { getValues, trigger } = useFormContext<CombinedSchema>();
   const page = useStore((state: { page: number }) => state.page);
   const setPage = useStore(
     (state: { setPage: (page: number) => void }) => state.setPage
@@ -24,14 +23,30 @@ export default function Royalties() {
   const prev = () => setPage(Math.max(0, page - 1));
 
   const next = async () => {
-    const stepValid = await form.trigger();
+    const stepValid = await trigger();
     if (stepValid) {
       setPage(page + 1);
     } else {
-      console.log("Form State:", form.getValues());
-      console.log("Form Errors:", form.formState.errors);
+      console.log("Form State:", getValues());
+      console.log("Form Errors:", trigger());
     }
   };
+
+  const formatStartDate = (start: string | Date) => {
+    if (start instanceof Date) {
+      return start.toLocaleDateString();
+    }
+    return start;
+  };
+
+  const formatEndDate = (end: Date | undefined) => {
+    if (end instanceof Date) {
+      return end.toLocaleDateString();
+    }
+    return "No end date set";
+  };
+
+  const royalties = getValues("royalties");
 
   return (
     <>
@@ -41,51 +56,73 @@ export default function Royalties() {
           <div className="text-lg dm-sans font-semibold ">Overview</div>
           <div className="mt-5">
             <div className="text-base dm-sans font-normal">
-              Collection Name:&nbsp;{form.getValues("collectionName")}
+              Collection Name:&nbsp;{getValues("collectionName")}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Collection Description:&nbsp;
-              {form.getValues("collectionDescription")}
+              {getValues("collectionDescription")}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Collection Image:&nbsp;
-              {form.getValues("collectionImage")?.name || "Not uploaded"}
+              {getValues("collectionImage")?.name || "Not uploaded"}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Uploaded Images:&nbsp;
-              {form.getValues("assetImages").length} images
+              {getValues("assetImages").length} images
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Uploaded Metadata:&nbsp;
-              {form.getValues("assetsMetadata").length} files
+              {getValues("assetsMetadata").length} files
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
               Price:&nbsp;
-              {form.getValues("price")} SOL
+              {getValues("price")} SOL
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
-              Wallet Address:&nbsp;
-              {form.getValues("walletAddress")}
+              Start Date:&nbsp;
+              {formatStartDate(getValues("start"))}
             </div>
           </div>
           <div className="mt-2">
             <div className="text-base dm-sans font-normal">
-              Royalty Percentage:&nbsp;
-              {form.getValues("royaltyPercentage")}%
+              End Date:&nbsp;
+              {formatEndDate(getValues("end"))}
             </div>
           </div>
+          <div className="mt-2">
+            <div className="text-base dm-sans font-normal">
+              Reveal Later:&nbsp;
+              {getValues("isRevealLaterEnabled") ? "Yes" : "No"}
+            </div>
+          </div>
+          {Object.entries(royalties).map(([key, value], index) => (
+            <div key={key} className="mt-2">
+              <div className="mt-2">
+                <div className="text-base dm-sans font-normal">
+                  Wallet Address {index + 1}: &nbsp;
+                  {value.walletAddress}
+                </div>
+              </div>
+              <div className="mt-2">
+                <div className="text-base dm-sans font-normal">
+                  Royalty Percentage {index + 1}:&nbsp;
+                  {value.royaltyPercentage}%
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       <div className="mt-8 pt-5 ml-auto">

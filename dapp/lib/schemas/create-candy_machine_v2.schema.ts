@@ -40,30 +40,61 @@ export const AssetsSchemaDefaults: IAssetsSchema = {
   assetsMetadata: [],
 };
 
-export const SettingsSchema = z.object({
-  price: z.coerce.number().positive(),
-});
+export const SettingsSchema = z
+  .object({
+    price: z.coerce.number().min(0),
+    start: z.date({
+      required_error: "A start date is required.",
+    }),
+    isEndDateEnabled: z.boolean().default(false),
+    end: z.date().optional(),
+    isRevealLaterEnabled: z.boolean().default(false),
+  })
+  .refine(
+    (data) => {
+      if (data.isEndDateEnabled) {
+        if (!data.end) {
+          return false;
+        }
+        if (data.end <= data.start) {
+          return false;
+        }
+      }
+      return true;
+    },
+    {
+      message: "An end date is required and must be later than the start date",
+      path: ["end"],
+    }
+  );
 
 export type ISettingsSchema = z.infer<typeof SettingsSchema>;
 
 export const SettingsSchemaDefaults: ISettingsSchema = {
   price: 0,
+  start: new Date(),
+  isEndDateEnabled: false,
+  end: new Date(new Date().setDate(new Date().getDate() + 1)),
+  isRevealLaterEnabled: false,
 };
-
 const SOLANA_ADDRESS_REGEX = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
 
-export const RoyaltiesSchema = z.object({
+const RoyaltyEntrySchema = z.object({
   walletAddress: z
     .string()
     .min(32, "Invalid Solana wallet address")
     .max(44, "Invalid Solana wallet address")
     .regex(SOLANA_ADDRESS_REGEX, "Invalid Solana wallet address"),
-  royaltyPercentage: z.coerce.number().positive().max(100),
+  royaltyPercentage: z.coerce.number().positive().max(100).min(5),
 });
+
+export const RoyaltiesSchema = z.array(RoyaltyEntrySchema).min(1).max(5);
 
 export type IRoyaltiesSchema = z.infer<typeof RoyaltiesSchema>;
 
-export const RoyaltiesSchemaDefaults: IRoyaltiesSchema = {
-  walletAddress: "",
-  royaltyPercentage: 0,
-};
+export const RoyaltiesSchemaDefaults: z.infer<typeof RoyaltiesSchema> = [
+  {
+    walletAddress: "",
+    royaltyPercentage: 5,
+  },
+];
