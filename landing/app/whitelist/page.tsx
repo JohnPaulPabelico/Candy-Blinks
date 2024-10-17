@@ -69,7 +69,7 @@ export default function Whitelist() {
     if (error) {
       toast({
         title: "Error",
-        description: "Failed to join the waitlist. Please try again.",
+        description: "You have already joined the waitlist.",
         action: (
           <ToastAction altText="Close" className="hover:bg-neutral-700">
             Close
@@ -146,7 +146,7 @@ export default function Whitelist() {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="Enter Wallet Address"
+                      placeholder="Enter Solana Wallet Address"
                       {...field}
                       className="bg-neutral-900 text-white border-neutral-900 h-12 focus-visible:ring-neutral-700 w-80"
                     />
