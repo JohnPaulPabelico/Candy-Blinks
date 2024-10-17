@@ -64,16 +64,16 @@ export default function Navbar() {
           <li className={`${barState ? "block mt-8" : "lg:block hidden"}`}>
             <Link
               className={` lg:text-xl text-3xl  dm-sans m-4 hover:text-slate-400 text-slate-100 transition duration-200`}
-              href="#explore"
+              href="#partners"
               onClick={() => {
                 setBarState(false);
                 console.log(barState);
               }}
             >
-              Explore
+              Partners
             </Link>
           </li>
-          <li className={`${barState ? "block mt-8" : "lg:block hidden"}`}>
+          {/* <li className={`${barState ? "block mt-8" : "lg:block hidden"}`}>
             <Link
               className={` lg:text-xl text-3xl  dm-sans m-4  hover:text-slate-400 text-slate-100 transition duration-200`}
               href="#contact"
@@ -84,7 +84,7 @@ export default function Navbar() {
             >
               Contact
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div>
