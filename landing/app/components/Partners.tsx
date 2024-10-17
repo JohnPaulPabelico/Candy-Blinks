@@ -19,7 +19,7 @@ export default function Partners() {
         </div>
         <div className="flex justify-center">
           <Reveal>
-            <div className="mt-20 grid grid-cols-3 lg:grid-cols-4 gap-10 items-center">
+            <div className="mt-20 grid grid-cols-3 lg:grid-cols-4 gap-10 items-center p-5">
               <Image
                 src={"/partners/DSCVR.png"}
                 alt="logo"
@@ -45,7 +45,7 @@ export default function Partners() {
                 alt="logo"
                 width={150}
                 height={150}
-                className="rounded-full "
+                className="rounded-full col-span-3 lg:col-span-1 justify-self-center"
               />
             </div>
           </Reveal>
