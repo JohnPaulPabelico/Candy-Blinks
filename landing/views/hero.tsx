@@ -30,10 +30,10 @@ export default function Hero() {
           <div className="mt-5 text-white flex items-center dm-sans justify-center lg:justify-start">
             <span>Powered by &nbsp;</span>
             <Image
-              src={"/SolanaLogo.png"}
-              alt={"Solana Logo"}
-              width={100}
-              height={100}
+              src={"/Metaplex.png"}
+              alt={"Metaplex Logo"}
+              width={130}
+              height={130}
             />
           </div>
         </div>
