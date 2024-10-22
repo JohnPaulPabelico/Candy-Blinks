@@ -21,16 +21,15 @@ export default function Royalties() {
     getValues,
     formState: { errors },
   } = useFormContext<{ royalties: IRoyaltiesSchema }>();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "royalties",
     rules: { minLength: 1, maxLength: 5 },
   });
 
-  const page = useStore((state: { page: number }) => state.page);
-  const setPage = useStore(
-    (state: { setPage: (page: number) => void }) => state.setPage
-  );
+  const page = useStore((state) => state.page);
+  const setPage = useStore((state) => state.setPage);
 
   useEffect(() => {
     if (fields.length === 0) {
@@ -38,16 +37,11 @@ export default function Royalties() {
     }
   }, [fields.length, append]);
 
-  const prev = () => setPage(Math.max(0, page - 1));
+  const onBack = () => setPage(Math.max(0, page - 1));
 
-  const next = async () => {
+  const onNext = async () => {
     const stepValid = await trigger("royalties");
-    if (stepValid) {
-      setPage(page + 1);
-    } else {
-      console.log("Form State:", getValues());
-      console.log("Form Errors:", errors);
-    }
+    if (stepValid) setPage(page + 1);
   };
 
   const addRoyaltyEntry = () => {
@@ -122,13 +116,13 @@ export default function Royalties() {
       <div className="mt-8 pt-5 ml-auto">
         <div className="flex justify-between">
           <Button
-            onClick={prev}
+            onClick={onBack}
             className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition-colors duration-200 hover:shadow-lg cursor-pointer disabled:cursor-not-allowed disabled:opacity-0"
           >
             Back
           </Button>
           <Button
-            onClick={next}
+            onClick={onNext}
             className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition-colors duration-200 hover:shadow-lg cursor-pointer disabled:cursor-not-allowed disabled:opacity-0"
           >
             Next

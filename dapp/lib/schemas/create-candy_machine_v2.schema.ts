@@ -29,8 +29,8 @@ export const CollectionDetailsSchemaDefaults: ICollectionDetailsSchema = {
 };
 
 export const AssetsSchema = z.object({
-  assetImages: z.array(z.instanceof(File)),
-  assetsMetadata: z.array(z.instanceof(File)),
+  assetImages: z.array(z.instanceof(File)).min(1),
+  assetsMetadata: z.array(z.instanceof(File)).min(1),
 });
 
 export type IAssetsSchema = z.infer<typeof AssetsSchema>;

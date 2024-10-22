@@ -21,7 +21,11 @@ const queryClient = new QueryClient();
 export default function Providers({ children }: IProvidersProps) {
   const network = WalletAdapterNetwork.Devnet;
 
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(
+    () =>
+      "https://devnet.helius-rpc.com/?api-key=86841795-5a03-4192-bd44-cbe41117cb77",
+    [network]
+  );
 
   const wallets = useMemo(() => [new BitgetWalletAdapter()], []);
 

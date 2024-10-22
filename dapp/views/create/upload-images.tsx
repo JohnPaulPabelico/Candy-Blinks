@@ -14,9 +14,49 @@ import { IAssetsSchema } from "@/lib/schemas/create-candy_machine_v2.schema";
 import React, { useCallback, useEffect } from "react";
 import useUploadImages from "@/hooks/useUploadImages";
 
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WebUploader } from "@irys/web-upload";
+import { WebSolana } from "@irys/web-upload-solana";
+
+const getIrysUploader = async (wallet: any) => {
+  try {
+    const irysUploader = await WebUploader(WebSolana).withProvider(wallet);
+
+    return irysUploader;
+  } catch (error) {
+    console.error("Error connecting to Irys:", error);
+    throw new Error("Error connecting to Irys");
+  }
+};
+
+// export const lazyFundNode = async (size) => {
+//   // const irys = getIrysClient();
+//   const price = await irys.getPrice(size);
+//   await irys.fund(price);
+// };
+
 export default function UploadImages() {
   const form = useFormContext<IAssetsSchema>();
   const { mutate, error, data } = useUploadImages();
+  const wallet = useWallet();
+
+  useEffect(() => {
+    const connectToIrys = async () => {
+      if (!wallet) {
+        console.log("Wallet not connected");
+        return;
+      }
+
+      try {
+        const irysUploader = await getIrysUploader(wallet);
+        console.log(`Connected to Irys from ${irysUploader.address}`);
+      } catch (error) {
+        console.log("Error connecting to Irys");
+      }
+    };
+
+    connectToIrys();
+  }, [wallet]);
 
   useEffect(() => {
     console.log(error);
@@ -25,9 +65,9 @@ export default function UploadImages() {
   useEffect(() => {
     console.log(data);
   }, [data]);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      mutate({ images: acceptedFiles });
       form.setValue("assetImages", [...acceptedFiles]);
     },
     [mutate, form]
@@ -101,3 +141,4 @@ export default function UploadImages() {
     />
   );
 }
+// pnpm add @irys/web-upload @irys/web-upload-solana

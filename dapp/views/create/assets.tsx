@@ -9,21 +9,14 @@ import UploadMetadatas from "./upload-metadata";
 
 export default function Assets() {
   const form = useFormContext<IAssetsSchema>();
-  const page = useStore((state: { page: number }) => state.page);
-  const setPage = useStore(
-    (state: { setPage: (page: number) => void }) => state.setPage
-  );
+  const page = useStore((state) => state.page);
+  const setPage = useStore((state) => state.setPage);
 
-  const prev = () => setPage(Math.max(0, page - 1));
+  const onBack = () => setPage(Math.max(0, page - 1));
 
-  const next = async () => {
+  const onNext = async () => {
     const stepValid = await form.trigger();
-    if (stepValid) {
-      setPage(page + 1);
-    } else {
-      console.log("Form State:", form.getValues());
-      console.log("Form Errors:", form.formState.errors);
-    }
+    if (stepValid) setPage(page + 1);
   };
 
   return (
@@ -38,13 +31,13 @@ export default function Assets() {
       <div className="mt-8 pt-5 ml-auto">
         <div className="flex justify-between">
           <Button
-            onClick={prev}
+            onClick={onBack}
             className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition-colors duration-200 hover:shadow-lg cursor-pointer disabled:cursor-not-allowed disabled:opacity-0"
           >
             Back
           </Button>
           <Button
-            onClick={next}
+            onClick={onNext}
             className="mt-5 text-xl bg-red-400 hover:bg-red-500 text-white dm-sans font-bold py-2 px-4 rounded transition-colors duration-200 hover:shadow-lg cursor-pointer disabled:cursor-not-allowed disabled:opacity-0"
           >
             Next
